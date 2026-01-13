@@ -22,7 +22,6 @@ urlpatterns = [
     path("orders/", views.orders_dashboard, name="orders"),
     path("orders/<int:order_id>/", views.order_detail, name="order_detail"),
     path("orders/<int:order_id>/toggle/", views.order_toggle, name="order_toggle"),
-    path("admin/sales/", views.sales_list, name="sales_list"),
 
 
     #sales panel
