@@ -1,0 +1,144 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">Commandes</h1>
+
+    <!-- ========================= -->
+    <!-- COMMANDES ACTIVES -->
+    <!-- ========================= -->
+    <div class="card shadow mb-5">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                Commandes à préparer
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Client</th>
+                        <th>Email</th>
+                        <th>Téléphone</th>
+                        <th>Total</th>
+                        <th>Date</th>
+                        <th>Détails</th>
+                        <th>Traitée</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in active_orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.first_name }} {{ order.last_name }}</td>
+                            <td>{{ order.email }}</td>
+                            <td>{{ order.phone|default:"—" }}</td>
+                            <td>{{ order.total }} $</td>
+                            <td>{{ order.created|date:"d/m/Y H:i" }}</td>
+
+                            <!-- Voir détails -->
+                            <td>
+                                <a href="{% url 'order_detail' order.id %}" 
+                                   class="btn btn-sm btn-info">
+                                    Voir
+                                </a>
+                            </td>
+
+                            <!-- Marquer traitée -->
+                            <td class="text-center">
+                                <form method="POST" action="{% url 'order_toggle' order.id %}">
+                                    {% csrf_token %}
+                                    <input 
+                                        type="checkbox"
+                                        onchange="this.form.submit()"
+                                        title="Marquer comme traitée"
+                                    >
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted">
+                                Aucune commande en attente
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- COMMANDES TRAITÉES -->
+    <!-- ========================= -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-success">
+                Commandes traitées
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Client</th>
+                            <th>Email</th>
+                            <th>Téléphone</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                            <th>Détails</th>
+                            <th>Traitée</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in treated_orders %}
+                        <tr>
+                            <td>#{{ order.id }}</td>
+                            <td>{{ order.first_name }} {{ order.last_name }}</td>
+                            <td>{{ order.email }}</td>
+                            <td>{{ order.phone|default:"—" }}</td>
+
+                            <td>{{ order.total }} $</td>
+                            <td>{{ order.created|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <a href="{% url 'order_detail' order.id %}" 
+                                   class="btn btn-sm btn-secondary">
+                                    Voir
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <form method="POST" action="{% url 'order_toggle' order.id %}">
+                                    {% csrf_token %}
+                                    <input 
+                                        type="checkbox"
+                                        checked
+                                        onchange="this.form.submit()"
+                                        title="Marquer comme traitée"
+                                    >
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                Aucune commande traitée
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

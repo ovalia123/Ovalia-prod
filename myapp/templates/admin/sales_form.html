@@ -1,0 +1,72 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Nom</label>
+                        {{ form.name }}
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label>Numéro</label>
+                        {{ form.numero }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Description</label>
+                    {{ form.description }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label>Catégorie</label>
+                        {{ form.category }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Matériau</label>
+                        {{ form.materiaux }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Prix ($)</label>
+                        {{ form.price }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Image</label>
+                    {{ form.image }}
+                </div>
+
+                <div class="form-check mb-3">
+                    {{ form.available }}
+                    <label class="form-check-label">Disponible</label>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Enregistrer
+                </button>
+
+                <a href="{% url 'sales_list' %}" class="btn btn-secondary">
+                    Annuler
+                </a>
+            </form>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}
