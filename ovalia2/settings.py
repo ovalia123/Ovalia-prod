@@ -118,7 +118,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ==================================================
 # STRIPE (FROM ENV ONLY)
 # ==================================================
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://ovalia-prod-production.up.railway.app",
+    "https://www.bijouxovalia.com",
+    "https://bijouxovalia.com",
+]
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
