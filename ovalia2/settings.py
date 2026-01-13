@@ -12,11 +12,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = [
-    os.getenv("RAILWAY_PUBLIC_DOMAIN", ""),
-    "www.bijouxovalia.com",
-    "bijouxovalia.com",
-]
+ALLOWED_HOSTS = ["*"]
+
 
 # ==================================================
 # APPLICATIONS
