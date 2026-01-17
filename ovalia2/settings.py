@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "gestion",
     "myapp",
 
-    # Cloudinary
+    # Cloudinary (MEDIA STORAGE)
     "cloudinary",
     "cloudinary_storage",
 ]
@@ -94,7 +94,7 @@ TEMPLATES = [
 ]
 
 # ==================================================
-# STATIC FILES (Whitenoise)
+# STATIC FILES (Whitenoise) — UNCHANGED
 # ==================================================
 
 STATIC_URL = "/static/"
@@ -103,6 +103,18 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = (
     "whitenoise.storage.CompressedManifestStaticFilesStorage"
 )
+
+# ==================================================
+# MEDIA FILES (CLOUDINARY) — NEW
+# ==================================================
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
+}
 
 # ==================================================
 # I18N
@@ -122,14 +134,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # ==================================================
 # STRIPE (FROM ENV ONLY)
 # ==================================================
+
 CSRF_TRUSTED_ORIGINS = [
     "https://ovalia-prod-production.up.railway.app",
     "https://www.bijouxovalia.com",
     "https://bijouxovalia.com",
 ]
+
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
