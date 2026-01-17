@@ -32,12 +32,13 @@ INSTALLED_APPS = [
     "gestion",
     "myapp",
 
-    # Cloudinary (MEDIA STORAGE)
+    # Cloudinary
     "cloudinary",
     "cloudinary_storage",
 ]
 
 AUTH_USER_MODEL = "gestion.User"
+
 
 # ==================================================
 # MIDDLEWARE
@@ -54,12 +55,14 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
 # ==================================================
 # URL / WSGI
 # ==================================================
 
 ROOT_URLCONF = "ovalia2.urls"
 WSGI_APPLICATION = "ovalia2.wsgi.application"
+
 
 # ==================================================
 # DATABASE (POSTGRES via Railway)
@@ -72,6 +75,7 @@ DATABASES = {
         ssl_require=True,
     )
 }
+
 
 # ==================================================
 # TEMPLATES
@@ -93,21 +97,27 @@ TEMPLATES = [
     },
 ]
 
+
 # ==================================================
-# STATIC FILES (Whitenoise) — UNCHANGED
+# STATIC + MEDIA STORAGE (DJANGO 4.2+)
 # ==================================================
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 
 # ==================================================
-# MEDIA FILES (CLOUDINARY) — NEW
+# CLOUDINARY CONFIG
 # ==================================================
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
@@ -115,13 +125,6 @@ CLOUDINARY_STORAGE = {
     "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
 }
 
-import cloudinary
-cloudinary.config(
-    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
-    api_key=os.getenv("CLOUDINARY_API_KEY"),
-    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
-    secure=True,
-)
 
 # ==================================================
 # I18N
@@ -132,14 +135,16 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+
 # ==================================================
 # DEFAULT PK
 # ==================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+
 # ==================================================
-# STRIPE (FROM ENV ONLY)
+# STRIPE (ENV ONLY)
 # ==================================================
 
 CSRF_TRUSTED_ORIGINS = [
