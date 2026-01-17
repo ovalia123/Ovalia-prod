@@ -31,6 +31,10 @@ INSTALLED_APPS = [
 
     "gestion",
     "myapp",
+
+    # Cloudinary
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 AUTH_USER_MODEL = "gestion.User"
