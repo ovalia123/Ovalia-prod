@@ -19,7 +19,7 @@ def login_view(request):
             user = form.get_user()
             if user.is_superuser : # important for the redirection either the admin or the member access
                 login(request, user)
-                return redirect('admin')
+                return redirect('product')
             elif user.is_verified : # the user has to be verified by an admin
                 login(request, user)
                 return redirect('member')
