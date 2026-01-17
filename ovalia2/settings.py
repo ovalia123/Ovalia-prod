@@ -104,10 +104,17 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # MEDIA FILES (CLOUDINARY – DJANGO 4.2+)
 # ==================================================
 
+
 STORAGES = {
+    # MEDIA → Cloudinary
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    }
+    },
+
+    # STATIC → Whitenoise
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
 }
 
 CLOUDINARY_STORAGE = {
