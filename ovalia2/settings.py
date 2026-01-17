@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # ==================================================
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "unsafe-dev-key")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
@@ -28,13 +28,8 @@ INSTALLED_APPS = [
 
     "django_filters",
 
-    # Apps
     "gestion",
     "myapp",
-
-    # Cloudinary
-    "cloudinary",
-    "cloudinary_storage",
 ]
 
 AUTH_USER_MODEL = "gestion.User"
@@ -62,7 +57,7 @@ ROOT_URLCONF = "ovalia2.urls"
 WSGI_APPLICATION = "ovalia2.wsgi.application"
 
 # ==================================================
-# DATABASE (POSTGRES – RAILWAY)
+# DATABASE (POSTGRES via Railway)
 # ==================================================
 
 DATABASES = {
@@ -94,7 +89,7 @@ TEMPLATES = [
 ]
 
 # ==================================================
-# STATIC FILES (WHITENOISE – SAFE)
+# STATIC FILES (Whitenoise)
 # ==================================================
 
 STATIC_URL = "/static/"
@@ -102,20 +97,11 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ==================================================
-# MEDIA FILES (CLOUDINARY – DJANGO 4.2+ CORRECT)
+# MEDIA FILES (LOCAL – STABLE)
 # ==================================================
 
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    }
-}
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
-    "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
-}
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # ==================================================
 # I18N
