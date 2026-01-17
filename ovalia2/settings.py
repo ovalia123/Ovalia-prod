@@ -30,6 +30,10 @@ INSTALLED_APPS = [
 
     "gestion",
     "myapp",
+
+    # Cloudinary
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 AUTH_USER_MODEL = "gestion.User"
@@ -57,7 +61,7 @@ ROOT_URLCONF = "ovalia2.urls"
 WSGI_APPLICATION = "ovalia2.wsgi.application"
 
 # ==================================================
-# DATABASE (POSTGRES via Railway)
+# DATABASE (POSTGRES – RAILWAY)
 # ==================================================
 
 DATABASES = {
@@ -89,7 +93,7 @@ TEMPLATES = [
 ]
 
 # ==================================================
-# STATIC FILES (Whitenoise)
+# STATIC FILES (WHITENOISE)
 # ==================================================
 
 STATIC_URL = "/static/"
@@ -97,11 +101,20 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ==================================================
-# MEDIA FILES (LOCAL – STABLE)
+# MEDIA FILES (CLOUDINARY – DJANGO 4.2+)
 # ==================================================
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    }
+}
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
+}
 
 # ==================================================
 # I18N
