@@ -100,7 +100,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # MEDIA FILES (LOCAL — WORKING)
 # ==================================================
 
-
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3.S3Storage",
@@ -115,21 +114,20 @@ AWS_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
 
 AWS_STORAGE_BUCKET_NAME = "media"
 AWS_S3_REGION_NAME = "auto"
-CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID", "").strip()
+
+CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID").strip()
 AWS_S3_ENDPOINT_URL = f"https://{CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com"
 
-
 AWS_S3_ADDRESSING_STYLE = "path"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
 AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_AUTH = False
 
-AWS_S3_SIGNATURE_VERSION = "s3v4"
-AWS_S3_CLIENT_CONFIG = Config(
-    region_name="auto",
-    signature_version="s3v4",
-)
+# 🔥 THIS IS WHAT YOU WERE MISSING
+AWS_S3_CUSTOM_DOMAIN = os.getenv("R2_PUBLIC_DOMAIN")
 
-MEDIA_URL = os.getenv("R2_PUBLIC_URL")
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+
 
 # ==================================================
 # I18N
