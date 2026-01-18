@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 
     "gestion",
     "myapp",
+    "storages",
 ]
 
 AUTH_USER_MODEL = "gestion.User"
