@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 
     "gestion",
     "myapp",
+    "storages",
 ]
 
 AUTH_USER_MODEL = "gestion.User"
@@ -99,8 +100,25 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # MEDIA FILES (LOCAL — WORKING)
 # ==================================================
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
+
+AWS_STORAGE_BUCKET_NAME = os.getenv("R2_BUCKET_NAME", "media")
+AWS_S3_REGION_NAME = "auto"
+
+AWS_S3_ENDPOINT_URL = (
+    f"https://{os.getenv('CLOUDFLARE_ACCOUNT_ID')}.r2.cloudflarestorage.com"
+)
+
+AWS_S3_ADDRESSING_STYLE = "path"
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+
+# MUST be the Public Dev URL (pub-xxxx.r2.dev)
+MEDIA_URL = os.getenv("R2_PUBLIC_URL")
 
 # ==================================================
 # I18N
