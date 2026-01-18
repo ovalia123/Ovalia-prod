@@ -11,7 +11,7 @@ class User(AbstractUser):
 
 class Product(models.Model):
     name = models.CharField(max_length=200, db_index=True)
-    image = models.ImageField(upload_to='products/', blank=True)
+    image = models.ImageField(upload_to='', blank=True)
     description = models.TextField(blank=True)
     cou = models.DecimalField(max_digits=10, decimal_places=2)
     poignee = models.DecimalField(max_digits=10, decimal_places=2)
@@ -43,7 +43,7 @@ class Sales(models.Model):
         ("Boucle doreille", "Boucle doreille"),
     ]
     name = models.CharField(max_length=200, db_index=True)
-    image = models.ImageField(upload_to='products/', blank=True)
+    image = models.ImageField(upload_to='', blank=True)
     description = models.TextField(blank=True)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
