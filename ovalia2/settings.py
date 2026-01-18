@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import dj_database_url
-
+from botocore.client import Config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ==================================================
@@ -103,7 +103,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 STORAGES = {
     "default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "BACKEND": "storages.backends.s3.S3Storage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -113,7 +113,7 @@ STORAGES = {
 AWS_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
 
-AWS_STORAGE_BUCKET_NAME = os.getenv("R2_BUCKET_NAME", "media")
+AWS_STORAGE_BUCKET_NAME = "media"
 AWS_S3_REGION_NAME = "auto"
 
 AWS_S3_ENDPOINT_URL = (
@@ -124,7 +124,12 @@ AWS_S3_ADDRESSING_STYLE = "path"
 AWS_DEFAULT_ACL = None
 AWS_QUERYSTRING_AUTH = False
 
-# MUST be the Public Dev URL (pub-xxxx.r2.dev)
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_S3_CONFIG = Config(
+    region_name="auto",
+    signature_version="s3v4",
+)
+
 MEDIA_URL = os.getenv("R2_PUBLIC_URL")
 
 # ==================================================
