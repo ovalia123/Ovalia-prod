@@ -85,12 +85,6 @@ class Order(models.Model):
     is_treated = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
-    invoice_pdf = models.FileField(
-        upload_to="invoices/",
-        null=True,
-        blank=True
-    )
-
     def __str__(self):
         return f"Order #{self.id} - {self.email}"
     

@@ -19,7 +19,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import stripe
 from django.template.loader import render_to_string
-from weasyprint import HTML
 from pathlib import Path
 
 
@@ -392,12 +391,9 @@ def stripe_webhook(request):
 
         print("Order items created")
         print("checkout.session.completed handled successfully")
-        pdf_path = generate_invoice_pdf(order)
 
-        order.invoice_pdf.name = f"invoices/invoice_{order.id}.pdf"
         order.save()
 
-        print("Invoice generated:", pdf_path)
         return HttpResponse(status=200)
 
     except Exception as e:
@@ -409,22 +405,3 @@ def stripe_webhook(request):
 
 
 
-def generate_invoice_pdf(order):
-    logo_path = Path(settings.BASE_DIR) / "static/images/logo.png"
-
-    html_string = render_to_string(
-        "user/invoices/invoice.html",
-        {
-            "order": order,
-            "logo_path": logo_path.as_uri(),  # 🔥 IMPORTANT
-        }
-    )
-
-    output_dir = Path(settings.MEDIA_ROOT) / "invoices"
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    pdf_path = output_dir / f"invoice_{order.id}.pdf"
-
-    HTML(string=html_string).write_pdf(target=str(pdf_path))
-
-    return pdf_path

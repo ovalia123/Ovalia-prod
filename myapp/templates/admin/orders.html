@@ -27,7 +27,6 @@
                         <th>Téléphone</th>
                         <th>Total</th>
                         <th>Date</th>
-                        <th>Facture</th>
                         <th>Détails</th>
                         <th>Traitée</th>
                     </tr>
@@ -42,13 +41,6 @@
                             <td>{{ order.total }} $</td>
                             <td>{{ order.created|date:"d/m/Y H:i" }}</td>
                             <td>
-                            {% if order.invoice_pdf %}
-                                <a href="{{ order.invoice_pdf.url }}" target="_blank" rel="noopener">
-                                Télécharger
-                                </a>
-                            {% else %}
-                                —
-                            {% endif %}
                             </td>
 
                             <!-- Voir détails -->
@@ -104,7 +96,6 @@
                             <th>Téléphone</th>
                             <th>Total</th>
                             <th>Date</th>
-                            <th>facture</th>
                             <th>Détails</th>
                             <th>Traitée</th>
                         </tr>
@@ -120,13 +111,6 @@
                             <td>{{ order.total }} $</td>
                             <td>{{ order.created|date:"d/m/Y H:i" }}</td>
                             <td>
-                            {% if order.invoice_pdf %}
-                                <a href="{{ order.invoice_pdf.url }}" target="_blank" rel="noopener">
-                                Télécharger
-                                </a>
-                            {% else %}
-                                —
-                            {% endif %}
                             </td>
                             <td>
                                 <a href="{% url 'order_detail' order.id %}" 
