@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Facture {{ order.id }}</title>
+
+  <style>
+    @page {
+      size: A4;
+      margin: 22mm;
+    }
+
+    :root {
+      --ink: #1c1c1c;
+      --muted: #8a8a8a;
+      --line: #e9e5df;
+      --accent: #b59a7c; /* beige / or doux */
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-size: 14px;
+      background: #ffffff;
+    }
+
+    /* ================= HEADER ================= */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 50px;
+    }
+
+    .logo {
+      font-size: 22px;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .invoice-meta {
+      text-align: right;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ================= SECTIONS ================= */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 40px 0;
+    }
+
+    /* ================= CLIENT ================= */
+    .client-box {
+      line-height: 1.7;
+    }
+
+    /* ================= TABLE ================= */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      text-align: left;
+      padding-bottom: 12px;
+    }
+
+    tbody td {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    /* ================= TOTALS ================= */
+    .totals {
+      width: 100%;
+      max-width: 320px;
+      margin-left: auto;
+      margin-top: 30px;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: 14px;
+    }
+
+    .totals-row.total {
+      margin-top: 12px;
+      padding-top: 14px;
+      border-top: 1px solid var(--ink);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    /* ================= FOOTER ================= */
+    .footer {
+      margin-top: 60px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <div class="header">
+    <img
+      src="{{ logo_path }}"
+      alt="Ovalia Atelier"
+      style="height: 48px;"
+    />
+
+    <div class="invoice-meta">
+      Facture #{{ order.id }}<br>
+      {{ order.created|date:"d F Y" }}
+    </div>
+  </div>
+
+  <!-- ================= CLIENT ================= -->
+  <div class="section">
+    <div class="section-title">Client</div>
+    <div class="client-box">
+      <strong>{{ order.first_name }} {{ order.last_name }}</strong><br>
+      {{ order.email }}<br>
+      {{ order.phone }}<br><br>
+      {{ order.address }}<br>
+      {{ order.city }}, {{ order.postal_code }}<br>
+      {{ order.country }}
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ================= ITEMS ================= -->
+  <div class="section">
+    <div class="section-title">Commande</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Article</th>
+          <th class="right">Prix</th>
+          <th class="right">Qté</th>
+          <th class="right">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items.all %}
+        <tr>
+          <td>{{ item.sale.name }}</td>
+          <td class="right">{{ item.price }} $</td>
+          <td class="right">{{ item.quantity }}</td>
+          <td class="right">{{ item.price|floatformat:2 }} $</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================= TOTALS ================= -->
+  <div class="totals">
+    <div class="totals-row">
+      <span>Sous-total</span>
+      <span>{{ order.subtotal }} $</span>
+    </div>
+    <div class="totals-row">
+      <span>TPS (5 %)</span>
+      <span>{{ order.tps }} $</span>
+    </div>
+    <div class="totals-row">
+      <span>TVQ (9,975 %)</span>
+      <span>{{ order.tvq }} $</span>
+    </div>
+    <div class="totals-row total">
+      <span>Total</span>
+      <span>{{ order.total }} $</span>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <div class="footer">
+    Merci pour votre confiance.<br>
+    Cette facture confirme le paiement de votre commande Ovalia.
+  </div>
+
+</body>
+</html>
