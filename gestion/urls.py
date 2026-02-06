@@ -25,7 +25,7 @@ urlpatterns = [
 
 
     #sales panel
-    path("sales/", views.sales_list, name="sales"),
+    path("sales/", views.sales_list, name="sales_list"),
     path("sales/add/", views.sales_create, name="sales_create"),
     path("sales/<int:sale_id>/edit/", views.sales_update, name="sales_update"),
     path("sales/<int:sale_id>/delete/", views.sales_delete, name="sales_delete"),
