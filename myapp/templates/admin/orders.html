@@ -144,5 +144,110 @@
     </div>
 
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const tables = document.querySelectorAll(".table");
+
+    tables.forEach(table => {
+
+        const wrapper = table.closest(".card-body");
+
+        /* ===== Controls container ===== */
+        const controls = document.createElement("div");
+        controls.style.display = "flex";
+        controls.style.justifyContent = "space-between";
+        controls.style.marginBottom = "10px";
+
+        /* ===== Search ===== */
+        const search = document.createElement("input");
+        search.placeholder = "Recherche...";
+        search.className = "form-control";
+        search.style.width = "200px";
+
+        /* ===== Items per page ===== */
+        const perPage = document.createElement("select");
+        perPage.className = "form-control";
+        perPage.style.width = "100px";
+        [10, 25, 50, 100].forEach(n => {
+            const opt = document.createElement("option");
+            opt.value = n;
+            opt.textContent = n;
+            perPage.appendChild(opt);
+        });
+
+        controls.appendChild(search);
+        controls.appendChild(perPage);
+        wrapper.insertBefore(controls, table.parentElement);
+
+        /* ===== Pagination container ===== */
+        const pagination = document.createElement("div");
+        pagination.style.marginTop = "15px";
+        pagination.style.textAlign = "center";
+        wrapper.appendChild(pagination);
+
+        let rows = Array.from(table.querySelectorAll("tbody tr"));
+        let filteredRows = [...rows];
+        let currentPage = 1;
+        let rowsPerPage = 10;
+
+        function renderTable() {
+            rows.forEach(r => r.style.display = "none");
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            filteredRows.slice(start, end).forEach(r => {
+                r.style.display = "";
+            });
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            pagination.innerHTML = "";
+
+            const pages = Math.ceil(filteredRows.length / rowsPerPage);
+
+            for (let i = 1; i <= pages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                btn.className = "btn btn-sm btn-light mx-1";
+
+                if (i === currentPage)
+                    btn.classList.add("btn-primary");
+
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderTable();
+                };
+
+                pagination.appendChild(btn);
+            }
+        }
+
+        /* ===== Search logic ===== */
+        search.addEventListener("keyup", () => {
+            const val = search.value.toLowerCase();
+
+            filteredRows = rows.filter(r =>
+                r.innerText.toLowerCase().includes(val)
+            );
+
+            currentPage = 1;
+            renderTable();
+        });
+
+        /* ===== Items per page ===== */
+        perPage.addEventListener("change", () => {
+            rowsPerPage = parseInt(perPage.value);
+            currentPage = 1;
+            renderTable();
+        });
+
+        renderTable();
+    });
+});
+</script>
 
 {% endblock %}
