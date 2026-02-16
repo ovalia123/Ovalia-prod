@@ -1,60 +1,185 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
-<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-		<div class="container">
-		<a class="navbar-brand" href={% url 'index' %}><img class="logo" src={% static 'images/big_logo_black.png' %} alt="Ovalia Atelier"></a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarsFurni">
-			<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-				<li>
-					<a class="nav-link" href= {% url 'index' %}>Accueil</a>
-				</li>
-				</li class="nav-item active">
-          <a class="nav-link" style="text-color:black;" href="{% url 'boutique' %}">Boutique</a>
-        </li>
-        <li ><a class="nav-link" href={% url 'shop' %}>Bracelet</a></li>
-        
-        <li><a class="nav-link" href={% url 'event' %}>Evenement</a></li>
-        <li ><a class="nav-link" href={% url 'faq' %}>FAQ</a></li>
-        <li><a class="nav-link" href={% url 'contact' %}>Contact</a></li>
-        <li><a class="nav-link" href="{% url 'cart' %}"><img src={% static 'images/cart.svg' %}></a></li>
-			</ul>
-			
-		</div>
-		</div>
-	</nav>
 
-<section class="py-5 bg-light">
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-lg-6">
-        <div class="ratio ratio-4x3 bg-white shadow-sm">
-          {% if sale.image %}
-            <img src="{{ sale.image.url }}" alt="{{ sale.name }}" class="img-fluid rounded object-fit-cover">
-          {% else %}
-            <img src="{% static 'images/product-1.png' %}" alt="{{ sale.name }}" class="img-fluid rounded object-fit-cover">
-          {% endif %}
-        </div>
-      </div>
-      <div class="col-lg-6">
-        <p class="text-muted mb-1">{{ sale.get_category_display|default:sale.category }}</p>
-        <h1 class="fw-bold mb-3">{{ sale.name }}</h1>
-        <p class="lead">{{ sale.description|default:"Création originale réalisée dans notre atelier." }}</p>
-        <ul class="list-unstyled text-muted mb-4">
-          <li><strong>Numéro :</strong> {{ sale.numero }}</li>
-          <li><strong>Matériau :</strong> {{ sale.materiaux }}</li>
-          <li><strong>Prix :</strong> ${{ sale.price }}</li>
-        </ul>
-        <form method="post" action="{% url 'add_to_cart' sale.id %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-dark btn-lg">Ajouter au panier</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
+<style>
+
+/* ===== GLOBAL ===== */
+
+.ov-detail{
+  font-family:"Playfair Display", serif;
+  background:#fff;
+  color:#2b2b2b;
+}
+
+.ov-wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:90px 30px;
+}
+
+/* ===== GRID LAYOUT ===== */
+
+.detail-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+.detail-title,
+.detail-desc,
+.detail-meta,
+.detail-category{
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+  word-break:break-word;
+  max-width:100%;
+}
+/* ===== IMAGE (FIXED SIZE ALWAYS) ===== */
+
+.detail-image{
+  width:100%;
+  max-width:520px;
+  height:520px;
+  background:#fff;
+  box-shadow:0 18px 40px rgba(0,0,0,.08);
+  border-radius:18px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.detail-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ===== TEXT ===== */
+
+.detail-category{
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-size:.8rem;
+  color:#7a6f65;
+  margin-bottom:10px;
+}
+
+.detail-title{
+  font-size:42px;
+  margin-bottom:16px;
+  font-weight:500;
+}
+
+.detail-desc{
+  font-size:16px;
+  color:#555;
+  line-height:1.7;
+  margin-bottom:24px;
+}
+
+.detail-meta{
+  margin-bottom:40px;
+}
+
+.detail-meta div{
+  margin-bottom:8px;
+  font-size:15px;
+}
+
+/* ===== BUTTON ===== */
+
+.detail-actions{
+  display:flex;
+  justify-content:flex-start;
+}
+
+.detail-actions button{
+  border:2px solid black;
+  background:white;
+  color:black;
+  padding:14px 40px;
+  font-size:14px;
+  letter-spacing:.5px;
+  transition:.3s;
+  font-family:"Playfair Display", serif;
+}
+
+.detail-actions button:hover{
+  background:black;
+  color:white;
+}
+
+
+/* ===== MOBILE ===== */
+
+@media(max-width:900px){
+
+.detail-grid{
+  grid-template-columns:1fr;
+  gap:40px;
+}
+
+.detail-image{
+  margin:auto;
+  height:420px;
+}
+
+}
+
+</style>
+
+
+<div class="ov-detail">
+<div class="ov-wrap">
+
+<div class="detail-grid">
+
+<!-- IMAGE -->
+<div class="detail-image">
+  {% if sale.image %}
+    <img src="{{ sale.image.url }}" alt="{{ sale.name }}">
+  {% else %}
+    <img src="{% static 'images/product-1.png' %}" alt="{{ sale.name }}">
+  {% endif %}
+</div>
+
+
+<!-- INFO -->
+<div>
+
+<p class="detail-category">
+{{ sale.get_category_display|default:sale.category }}
+</p>
+
+<h1 class="detail-title">{{ sale.name }}</h1>
+
+<p class="detail-desc">
+{{ sale.description|default:"Création originale réalisée dans notre atelier Ovalia." }}
+</p>
+
+<div class="detail-meta">
+<div><strong>Numéro :</strong> {{ sale.numero }}</div>
+<div><strong>Matériau :</strong> {{ sale.materiaux }}</div>
+<div><strong>Prix :</strong> ${{ sale.price }}</div>
+</div>
+
+<form method="post" action="{% url 'add_to_cart' sale.id %}">
+{% csrf_token %}
+
+<div class="detail-actions">
+<button type="submit">
+Ajouter au panier
+</button>
+</div>
+
+</form>
+
+</div>
+
+</div>
+</div>
+</div>
+
 {% endblock %}

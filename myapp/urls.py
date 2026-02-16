@@ -6,7 +6,8 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('', views.maintenance, name='maintenance'),
+    path('index/', views.index, name='index'),
     path('contact/', views.contact, name='contact'),
     path('member/', views.member, name='member'),
     path('faq/', views.faq, name='faq'),
@@ -15,13 +16,13 @@ urlpatterns = [
     path('condition/', views.condition, name='condition'),
     path('logout/', views.logout_view, name='logout'),
     path('cart/', views.cart, name='cart'),
+    path('about/', views.about, name='about'),
 
     # shop
-    path('shop/', views.shop, name='shop'),
-    path('shop/or14k', views.shop_14k, name='or14k'),
-    path('shop/or10k', views.shop_10k, name='or10k'),
-    path('shop/argent', views.shop_argent, name='argent'),
-    path('shop/orRempli', views.shop_rempli, name='orrempli'),
+    path('experience/', views.shop, name='shop'),
+    path('orMassif/', views.shop_massif, name='or'),
+    path('argent/', views.shop_argent, name='argent'),
+    path('orRempli/', views.shop_rempli, name='orrempli'),
     path('shop/charms', views.charms, name='charms'),
     path('shop/tennis', views.tennis, name='tennis'),
     # boutique & ecommerce

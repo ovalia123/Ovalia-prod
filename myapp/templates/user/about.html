@@ -1,0 +1,330 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+
+/* GLOBAL */
+
+
+/* HERO INTRO */
+
+.ov-about{
+  font-family:"Playfair Display", serif;
+  background:#fff;
+  color:#000;
+}
+
+
+/* SECTIONS */
+
+.ov-section{
+  padding:120px 0;
+  position:relative;
+}
+
+/* Fancy divider */
+.ov-section::after{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:120px;
+  height:3px;
+  background:#000;
+  opacity:.18;
+}
+
+
+/* WRAPPER */
+
+.ov-wrap{
+  max-width:1300px;
+  margin:auto;
+  padding:0 30px;
+}
+
+.ov-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:90px;
+  align-items:center;
+}
+
+
+/* TITLES */
+
+.ov-title{
+  font-size:48px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:30px;
+  position:relative;
+}
+
+.ov-title::after{
+  content:"";
+  width:80px;
+  height:3px;
+  background:#000;
+  display:block;
+  margin-top:16px;
+  opacity:.25;
+}
+
+
+/* TEXT */
+
+.ov-text{
+  font-size:19px;
+  line-height:2.1;
+  margin-bottom:20px;
+}
+
+
+/* QUOTE */
+
+.ov-quote{
+  font-size:28px;
+  font-style:italic;
+  margin:60px 0;
+  line-height:1.6;
+  border-left:4px solid #000;
+  padding-left:30px;
+}
+
+
+/* IMAGES */
+
+.ov-media{
+  overflow:hidden;
+  border-radius:4px;
+}
+
+.ov-media img{
+  width:100%;
+  height:750px;
+  object-fit:cover;
+  transition:transform 1s cubic-bezier(.16,1,.3,1);
+}
+
+.ov-media:hover img{
+  transform:scale(1.06);
+}
+
+
+/* BENEFITS */
+
+.ov-benefit{
+  border-top:1px solid #eee;
+  padding:24px 0;
+}
+
+.ov-benefit h3{
+  font-size:23px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+
+
+/* ANIMATION */
+
+.fade-up{
+  opacity:0;
+  transform:translateY(50px);
+  transition:all 1.1s cubic-bezier(.16,1,.3,1);
+}
+
+.fade-up.show{
+  opacity:1;
+  transform:none;
+}
+.cta-book{
+  text-align:center;
+  margin:60px 0;
+}
+
+.cta-book a{
+  border:2px solid black;
+  padding:14px 32px;
+  text-decoration:none;
+  color:black;
+  letter-spacing:1px;
+  transition:.3s;
+}
+
+.cta-book a:hover{
+  background:black;
+  color:white;
+}
+
+
+/* MOBILE */
+
+@media(max-width:900px){
+  .ov-grid{
+    grid-template-columns:1fr;
+    gap:50px;
+  }
+
+  .ov-media img{
+    height:420px;
+  }
+
+  .ov-title{
+    font-size:36px;
+  }
+
+  .ov-section{
+    padding:90px 0;
+  }
+}
+</style>
+
+
+<div class="ov-about">
+
+
+
+<!-- QUI EST AMELIE -->
+
+<section class="ov-section">
+  <div class="ov-wrap ov-grid">
+
+    <div class="fade-up">
+
+      <h2 class="ov-title">QUI EST AMÉLIE</h2>
+
+      <p class="ov-text">
+        Je m'appelle Amélie, fondatrice d’Ovalia. Ma passion pour les bijoux ne vient pas seulement de leur beauté, mais de ce qu'ils provoquent.
+      </p>
+
+      <p class="ov-text">
+        Le geste de poser un bijou. Le regard qui brille. Le moment suspendu où une personne choisit de marquer quelque chose d’important pour elle.
+      </p>
+
+      <p class="ov-text">
+        En 2023, j’ai choisi de faire de cette passion un métier. À un moment où j’avais besoin de créer du vrai, du tangible, du profondément humain.
+      </p>
+
+      <p class="ov-text">
+        Ovalia est née de ce désir : unir l’art du bijou à la rencontre, à l’échange, au lien.
+      </p>
+
+      <p class="ov-text">
+        Chaque bijou que je soude est un symbole. Un choix. Une promesse. Une étape de vie.
+      </p>
+
+      <p class="ov-text">
+        Ovalia, c’est plus qu’un bijou. C’est une expérience. Un moment partagé. Un lien qui se crée, sans jamais enfermer.
+      </p>
+
+    </div>
+
+    <div class="ov-media fade-up">
+      <img src="{% static 'images/914741E1-9B0B-42C5-ACDD-224B9FECC413.JPG' %}">
+    </div>
+
+  </div>
+</section>
+
+<!-- MISSION -->
+
+<section class="ov-section">
+  <div class="ov-wrap ov-grid">
+
+    <div class="ov-media fade-up">
+      <img src="{% static 'images/IMG_0689.JPG' %}">
+    </div>
+
+    <div class="fade-up">
+      <h2 class="ov-title">NOTRE MISSION</h2>
+      <p class="ov-text">
+        Créer des bijoux permanents de qualité, porteurs de sens qui s'ancrent dans votre quotidien et deviennent les témoins silencieux de votre histoire.
+      </p>
+
+      <div class="ov-quote">
+        Un bijou permanent n’attache pas.  
+        Il rappelle simplement ce qui compte.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+<!-- POURQUOI OVALIA -->
+
+<section class="ov-section">
+  <div class="ov-wrap ov-grid">
+
+    <div class="fade-up">
+      <h2 class="ov-title">POURQUOI CHOISIR OVALIA</h2>
+
+      <div class="ov-benefit">
+        <h3>UNE EXPÉRIENCE HUMAINE</h3>
+        <p>Chaque bijou permanent est posé dans un moment calme, attentionné et personnalisé.</p>
+      </div>
+
+      <div class="ov-benefit">
+        <h3>DES BIJOUX FAITS POUR DURER</h3>
+        <p>Nos chaînes et connecteurs sont sélectionnés pour leur qualité, leur durabilité et leur confort.</p>
+      </div>
+
+      <div class="ov-benefit">
+        <h3>DES MOMENTS QUI RASSEMBLENT</h3>
+        <p>Seule, entre amis ou lors d’un événement, Ovalia transforme chaque rencontre en expérience partagée.</p>
+      </div>
+
+      <div class="ov-benefit">
+        <h3>UN LIEN CHOISI</h3>
+        <p>Un bijou permanent n’est pas une contrainte. C’est un choix conscient.</p>
+      </div>
+    </div>
+
+    <div class="ov-media fade-up">
+      <img src="{% static 'images/AA760049-FC5E-49A8-851F-B3BECA818ADA.JPG' %}">
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- FINAL VISUAL -->
+
+<section class="ov-section">
+  <div class="ov-wrap ov-media fade-up">
+    <img src="{% static 'images/IMG_2070.JPG' %}">
+    <div class="cta-book">
+    <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+        target="_blank">
+        PRENDRE RENDEZ-VOUS
+    </a>
+</div>
+
+  </div>
+</section>
+
+</div>
+
+
+
+<script>
+const faders=document.querySelectorAll('.fade-up');
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
+    }
+  });
+},{threshold:.2});
+
+faders.forEach(el=>observer.observe(el));
+</script>
+
+{% endblock %}

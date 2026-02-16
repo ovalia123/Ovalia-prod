@@ -28,14 +28,23 @@ TPS_RATE = Decimal("0.05")
 TVQ_RATE = Decimal("0.09975")
 
 def index(request):
-    latest_products = Sales.objects.filter(available=True).order_by('-created')[:3]
-    context = {'latest_products': latest_products}
+    featured_products = Sales.objects.filter(
+        available=True
+    ).order_by('-created')[:3]
+
+    context = {
+        'featured_products': featured_products
+    }
+
     return render(request, 'user/index.html', context)
+
 
 
 def faq(request):
     return render(request, 'user/faq.html')
 
+def about(request):
+    return render(request, 'user/about.html')
 
 def condition(request):
     return render(request, 'Conditions_utilisation.html')
@@ -65,20 +74,19 @@ def login(request):
 def member(request):
     return render(request, 'user/members.html')
 
+def maintenance(request):
+    return render(request, 'user/maintenance.html')
 
 def shop(request):
     return render(request, 'user/shop/shop.html')
 
 
-def shop_14k(request):
-    products = Product.objects.filter(available=True, materiaux='Or massif 14k')
-    print(products)
+
+
+
+def shop_massif(request):
+    products = Product.objects.filter(available=True, materiaux='Or massif')
     return render(request, 'user/shop/or_massif.html', {'products': products})
-
-
-def shop_10k(request):
-    products = Product.objects.filter(available=True, materiaux='Or massif 10k')
-    return render(request, 'user/shop/or_massif_10k.html', {'products': products})
 
 
 def shop_rempli(request):
@@ -99,9 +107,28 @@ def charms(request):
 
 
 def boutique(request):
-    sales = Sales.objects.filter(available=True).order_by('-created')
-    context = {'sales': sales}
-    return render(request, 'user/sales/boutique.html', context)
+    category = request.GET.get("category")
+    material = request.GET.get("material")
+
+    sales = Sales.objects.filter(available=True)
+
+    if category:
+        sales = sales.filter(category=category)
+
+    if material:
+        sales = sales.filter(materiaux=material)
+
+    sales = sales.order_by("-created")
+
+    context = {
+        "sales": sales,
+        "current_category": category,
+        "current_material": material,
+    }
+
+    return render(request, "user/sales/boutique.html", context)
+
+
 
 
 def sale_detail(request, sale_id):

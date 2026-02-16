@@ -1,421 +1,515 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
+{% block content %}
 
-<html lang="fr">
-
-{% block content %}	
 <style>
-  
-  .bracelets-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 1200px;
-    margin-bottom: 100px;
-    overflow: hidden;
-    background-color: #f1eae4;
-  }
-  
-  .bracelets-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  
-  .bracelets-overlay {
-    position: absolute;
-    top: 50px;
-    left: 50%;
-    transform: translateX(-10%);
-    background-color: #b9997e;
-    color: #1f1f1f;
-    padding: 40px;
-    max-width: 600px;
-    z-index: 2;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
-  .bracelets-content h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  .bracelets-content p {
-    font-size: 16px;
-    line-height: 1.8;
-    margin-bottom: 20px;
-  }
-  
-  .bracelets-content strong {
-    color: #000;
-  }
-  
-  /* ----------- Responsive version ----------- */
-  @media (max-width: 768px) {
-    .bracelets-overlay {
-      position: relative;
-      top: 0;
-      left: 0;
-      transform: none;
-      max-width: 100%;
-      margin-top: -20px;
-      padding: 30px 20px;
-      box-shadow: none;
-    }
-  
-    .bracelets-content h2 {
-      font-size: 22px;
-      text-align: center;
-    }
-  
-    .bracelets-content p {
-      font-size: 15px;
-    }
-  
-    .bracelets-wrapper {
-      padding-bottom: 20px;
-    }
-  }
-  
-  .box {
-    background-color:#B59F8A;
-    padding: 5% 3% 5% 3%;
-    height: 100%;
-    margin:0 0 10% 30%;
-    position:sticky;
-  }
-  .containerr {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    flex-wrap: wrap;
-    margin-top:100px;
-  }
-  .card {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 320px;
-    border-radius: 24px;
-    line-height: 1.6;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-    padding: 36px;
-    border-radius: 22px;
-    color: #ffffff;
-    overflow: hidden;
-    background: #B59F8A;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-    text-decoration:none;
-  }
-  
-  .content::before {
-    position: absolute;
-    content: "";
-    top: -4%;
-    left: 50%;
-    width: 90%;
-    height: 90%;
-    transform: translate(-50%);
-    background:rgb(226, 207, 188);
-    z-index: -1;
-    transform-origin: bottom;
-  
-    border-radius: inherit;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .content::after {
-    position: absolute;
-    content: "";
-    top: -8%;
-    left: 50%;
-    width: 80%;
-    height: 80%;
-    transform: translate(-50%);
-    background: #e7ecff;
-    z-index: -2;
-    transform-origin: bottom;
-    border-radius: inherit;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .content svg {
-    width: 48px;
-    height: 48px;
-  }
-  
-  .content .para {
-    z-index: 1;
-    opacity: 1;
-    font-size: 24px;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .content .link {
-    z-index: 1;
-    color: #fea000;
-    text-decoration: none;
-    font-family: inherit;
-    font-size: 16px;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .content .link:hover {
-    text-decoration: underline;
-  }
-  
-  .card:hover {
-    transform: translate(0px, -16px);
-  }
-  
-  .card:hover .content::before {
-    rotate: -8deg;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .card:hover .content::after {
-    rotate: 8deg;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .img-box{
 
+/* GLOBAL */
+
+.ov-page{
+font-family:"Playfair Display", serif;
+color:#000;
+background:#fff;
+}
+
+/* SECTION */
+
+.ov-section{
+padding:120px 0;
+max-width:1300px;
+margin:auto;
+}
+
+/* GRID */
+
+.ov-grid{
+display:grid;
+grid-template-columns:1.1fr 1fr;
+gap:80px;
+align-items:center;
+}
+
+/* IMAGE */
+
+.ov-img img{
+width:100%;
+height:620px;
+object-fit:cover;
+}
+
+/* TITLES */
+
+.ov-title{
+font-size:44px;
+text-transform:uppercase;
+margin-bottom:20px;
+letter-spacing:1px;
+}
+
+.ov-text{
+font-size:18px;
+line-height:1.9;
+}
+
+/* STEPS */
+
+.ov-steps h3{
+text-transform:uppercase;
+margin-top:40px;
+font-size:22px;
+}
+
+/* ACCORDION */
+
+.ov-accordion-item{
+border-bottom:1px solid #ddd;
+padding:18px 0;
+cursor:pointer;
+}
+
+.ov-accordion-item h4{
+display:flex;
+justify-content:space-between;
+font-size:18px;
+margin:0;
+}
+
+.ov-answer{
+max-height:0;
+overflow:hidden;
+transition:.4s ease;
+font-size:16px;
+line-height:1.7;
+}
+
+.ov-answer.show{
+max-height:400px;
+padding-top:12px;
+}
+
+/* MATERIALS */
+
+.ov-material{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:60px;
+margin-bottom:80px;
+align-items:center;
+}
+
+/* CTA BUTTON */
+
+.ov-cta{
+text-align:center;
+margin-top:60px;
+}
+
+.ov-cta a{
+border:2px solid #000;
+padding:16px 36px;
+text-decoration:none;
+color:#000;
+letter-spacing:1px;
+transition:.3s;
+}
+
+.ov-cta a:hover{
+background:#000;
+color:#fff;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+.ov-grid,.ov-material{
+grid-template-columns:1fr;
+}
+.ov-img img{
+height:400px;
+}
+}
+/* ===== MOBILE FIX ===== */
+@media(max-width:768px){
+
+  /* GLOBAL PADDING */
+  body{
+    padding:0;
+    margin:0;
   }
+
+  section{
+    padding:50px 20px !important;
+  }
+
+  /* TITLES */
+  h1, h2, .ov-title{
+    font-size:28px !important;
+    line-height:1.3;
+    text-align:center;
+  }
+
+  /* ACCORDION HEADERS */
+  .faq-heading{
+    font-size:22px;
+    text-align:center;
+  }
+
+  .faq-question h3{
+    font-size:16px;
+  }
+
+  /* FAQ BOX */
+  .faq-item{
+    border:none;
+    border-bottom:1px solid #ddd;
+    border-radius:0;
+  }
+
+  .faq-question{
+    padding:18px 10px;
+  }
+
+  .faq-answer{
+    font-size:15px;
+  }
+
+  /* DIVIDER */
+  .ov-divider{
+    margin:50px auto;
+    width:50px;
+  }
+
+  /* IMAGES */
+  img{
+    width:100%;
+    height:auto;
+  }
+
+}
+
+/* ===== GALLERY ===== */
+
+.ov-gallery-section{
+  padding:100px 0;
+  background:#fff;
+}
+
+.ov-gallery{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:25px;
+  padding:0 20px;
+}
+
+/* IMAGES */
+
+.ov-gallery img{
+  width:100%;
+  height:500px;
+  object-fit:cover;
+  transition:.5s ease;
+  cursor:pointer;
+}
+
+.ov-gallery img:hover{
+  transform:scale(1.03);
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .ov-gallery{
+    grid-template-columns:1fr;
+  }
+
+  .ov-gallery img{
+    height:350px;
+  }
+
+}
+
 </style>
-<body>
-  <!-- Start Header/Navigation -->
-  <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-		<div class="container">
-		<a class="navbar-brand" href={% url 'index' %}><img class="logo" src={% static 'images/big_logo_black.png' %} alt="Ovalia Atelier"></a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarsFurni">
-			<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-				<li>
-					<a class="nav-link" href= {% url 'index' %}>Accueil</a>
-				</li>
-				</li>
-          <a class="nav-link" style="text-color:black;" href="{% url 'boutique' %}">Boutique</a>
-        </li>
-        <li class="nav-item active"><a class="nav-link" href={% url 'shop' %}>Bracelet</a></li>
-        
-        <li><a class="nav-link" href={% url 'event' %}>Evenement</a></li>
-        <li ><a class="nav-link" href={% url 'faq' %}>FAQ</a></li>
-        <li><a class="nav-link" href={% url 'contact' %}>Contact</a></li>
-        <li><a class="nav-link" href="{% url 'cart' %}"><img src={% static 'images/cart.svg' %}></a></li>
-			</ul>
-			
-		</div>
-		</div>
-	</nav>
-  <!-- End Header/Navigation -->
 
-  <!-- Start Hero Section -->
-  
-  <!-- End Hero Section -->
 
-  <!-- Start Product Section -->
-  <div class="untree_co-section product-section" >
-    <div class="container">
+<div class="ov-page">
 
-      <div class="bracelets-wrapper">
-        <div class="bracelets-image">
-          <img src={% static 'images/IMG_2070.JPG' %} alt="Bijoux permanents Ovalia">
-        </div>
-        <div class="bracelets-overlay">
-          <div class="bracelets-content">
-            <h4 class="product-title">bijoux permanents – bracelets & prix</h4>
-            <p>
-              Chez <strong>Ovalia</strong>, nos bijoux permanents sont bien plus que de simples accessoires :
-              ce sont des symboles durables de ton style, de tes souvenirs et de tes liens précieux.
-              Chaque bracelet est soudé directement à ton poignet grâce à un flash rapide et indolore,
-              pour un bijou que tu ne perdras jamais.
-            </p>
-            <p>
-              Nous proposons des chaînes de qualité, sélectionnées pour leur beauté et leur résistance au quotidien :
-              <strong>l’or massif 14k</strong>, élégant et durable, idéal pour un port quotidien ;
-              <strong>l’or massif 10k</strong>, solide et accessible, parfait pour la vie de tous les jours ;
-              <strong>l’or rempli (gold filled 14k)</strong>, une belle alternative résistante à l’or massif ;
-              et <strong>l’argent sterling (.925)</strong>, raffiné et intemporel, qui dure avec un bon entretien.
-            </p>
-            <p>
-              Fais de ton bracelet permanent une déclaration personnelle qui te suit partout.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-      
-         <!-- Products Grid -->
-        <div class="col-md-12 col-lg-12">
-          <div class="row">
-              <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                <div class="product-item" href="">
-                  <img src={% static 'images/back.jpg' %} class="img-card">
-                  <h3 class="product-title">Or massif 14k</h3>
-                  <br>
-                  <p><a href="{% url 'or14k' %}" class="btn-card">Explorer</a></p>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                <div class="product-item" href="">
-                  <img src={% static 'images/IMG_8451.JPG' %} class="img-card">
-                  <h3 class="product-title">Or massif 10k</h3>
-                  <br>
-                  <p><a href="{% url 'or10k' %}" class="btn-card">Explorer</a></p>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                <div class="product-item" href="">
-                  <img src={% static 'images/IMG_0689.JPG' %} class="img-card">
-                  <h3 class="product-title">Or rempli</h3>
-                  <br>
-                  <p><a href="{% url 'orrempli' %}" class="btn-card">Explorer</a></p>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                <div class="product-item" href="">
-                  <img src={% static 'images/IMG_4827.JPG' %} class="img-card">
-                  <h3 class="product-title">Argent sterling</h3>
-                  <br>
-                  <p><a href="{% url 'argent' %}" class="btn-card">Explorer</a></p>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                <div class="product-item" href="">
-                  <img src={% static 'images/charms.jpeg' %} class="img-card">
-                  <h3 class="product-title">Charms</h3>
-                  <br>
-                  <p><a href="{% url 'charms' %}" class="btn-card">Explorer</a></p>
-                </div>
-              </div>
-              <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                  <div class="product-item" href="">
-                    <img src={% static 'images/tennis.webp' %} class="img-card">
-                    <h3 class="product-title">Tennis</h3>
-                    <br>
-                    <p><a href="{% url 'tennis' %}" class="btn-card">Explorer</a></p>
-                  </div>
-                </div>
-          </div>
-          
-        </div>
-      </div>
-    </div>
+<!-- INTRO -->
+
+<section class="ov-section">
+<div class="ov-grid">
+
+<div class="ov-img">
+<img src="{% static 'images/IMG_3064.JPG' %}">
+</div>
+
+<div>
+<h1 class="ov-title">BIJOUX PERMANENTS</h1>
+<p class="ov-text">
+Les bijoux permanents Ovalia sont des liens choisis, soudés dans l’instant,
+portés comme un rituel plutôt qu’un simple bijou.
+</p>
+
+<div class="ov-steps">
+
+<h3>ÉTAPE 1 : SÉLECTIONNEZ VOTRE STYLE</h3>
+<p>Choisissez le style de chaîne, le matériau et les breloques pour votre bijou permanent.</p>
+
+<h3>ÉTAPE 2 : TAILLE PERSONNALISÉE</h3>
+<p>Nous prenons vos mesures afin d’ajuster le bijou à votre taille.</p>
+
+<h3>SOUDURE</h3>
+<p>Nous soudons le bijou en quelques secondes, de façon sécuritaire et sans douleur.</p>
+
+</div>
+</div>
+
+</div>
+</section>
+
+<div class="ov-divider"></div>
+
+<!-- CHAINE PHOTOS -->
+
+<!-- IMAGE GALLERY -->
+<section class="ov-gallery-section">
+
+  <div class="ov-gallery">
+
+    <img src="{% static 'images/IMG_2732.JPG' %}" alt="">
+    <img src="{% static 'images/IMG_2356.JPG' %}" alt="">
+    <img src="{% static 'images/IMG_0689.JPG' %}" alt="">
+    <img src="{% static 'images/IMG_0306.JPG' %}" alt="">
+
   </div>
-  <div class="untree_co-section product-section" style="background-color:white;">
-    <div class="container">
-      <h4 class="product-title">Services</h4>
-      <p>Offrez-vous un moment unique avec nos bijoux permanents, personnalisés et pensés pour durer. Que ce soit en solo, en duo ou en groupe, chaque séance est une expérience sur mesure, dans une ambiance conviviale et raffinée.</p>
-      <div class="containerr">
-        <div class="card">
-          <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services" class="content" target="_blank">
-            <h2
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >Pose bijoux permanents</h2>
-              <path
-                d="M20 9V5H4V9H20ZM20 11H4V19H20V11ZM3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM5 12H8V17H5V12ZM5 6H7V8H5V6ZM9 6H11V8H9V6Z"
-              ></path>
-            </svg>
-            <p class="para">
-              à partir de 55$・20 min
 
-            </p>
-            
-            <br>
-          </a>
-        </div>
-        <div class="card">
-          <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services" class="content" target="_blank">
-            <h2
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >Resserrage / Réparation</h2>
-              <path
-                d="M20 9V5H4V9H20ZM20 11H4V19H20V11ZM3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM5 12H8V17H5V12ZM5 6H7V8H5V6ZM9 6H11V8H9V6Z"
-              ></path>
-            </svg>
-            <p class="para">
-              à partir de 10$・20 min
+</section>
 
-            </p>
-            
-            <br>
-          </a>
-        </div>
-        <div class="card">
-          <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services" class="content" target="_blank">
-            <h2
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >Gravures sur bijoux</h2>
-              <path
-                d="M20 9V5H4V9H20ZM20 11H4V19H20V11ZM3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM5 12H8V17H5V12ZM5 6H7V8H5V6ZM9 6H11V8H9V6Z"
-              ></path>
-            </svg>
-            <p class="para">
-              Prix variable・20 min
-
-            </p>
-            <br>
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Product Section -->
+<div class="ov-divider"></div>
 
 
-  <!-- Start Workshop Promo Section -->
-  <!-- End Workshop Promo Section -->
+<!-- POLITIQUES -->
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('.material-filter');
-        const products = document.querySelectorAll('.product-card');
-        const nameInput = document.getElementById('name-filter');
-      
-        function applyFilters() {
-          const selectedMaterials = Array.from(checkboxes)
-                                         .filter(c => c.checked)
-                                         .map(c => c.value);
-      
-          const nameFilter = nameInput.value.trim().toLowerCase();
-      
-          products.forEach(product => {
-            const material = product.dataset.material;
-            const name = product.dataset.name;
-      
-            const matchesMaterial = selectedMaterials.length === 0 || selectedMaterials.includes(material);
-            const matchesName = name.includes(nameFilter);
-      
-            if (matchesMaterial && matchesName) {
-              product.style.display = '';
-            } else {
-              product.style.display = 'none';
-            }
-          });
-        }
-      
-        checkboxes.forEach(cb => cb.addEventListener('change', applyFilters));
-        nameInput.addEventListener('input', applyFilters);
-      });
+<section class="ov-section">
 
-      </script>
-      
+<h2 class="ov-title">POLITIQUES ET GARANTIES</h2>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Re-soudure <span>+</span></h4>
+<div class="ov-answer">
+Re-soudure gratuites et illimitées pour situations inattendues pendant
+30 jours suivant l'achat d'origine.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Resserrage <span>+</span></h4>
+<div class="ov-answer">
+Resserrage gratuit pour une durée de 6 mois suivant l'achat.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Remplacement <span>+</span></h4>
+<div class="ov-answer">
+Remplacement unique gratuit si breloque perdue dans les 7 jours suivant l'achat.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Réactions au métal <span>+</span></h4>
+<div class="ov-answer">
+Un petit pourcentage de personnes peut réagir au métal.
+Échange possible dans les 7 jours suivant l'achat seulement.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Politique d'annulation <span>+</span></h4>
+<div class="ov-answer">
+Toute modification ou annulation doit être effectuée au moins 24h à l’avance
+pour remboursement complet du dépôt.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Retour <span>+</span></h4>
+<div class="ov-answer">
+Il n'existe pas de retour. Le bijou est vente finale.
+</div>
+</div>
+
+</section>
+<div class="ov-divider"></div>
+
+
+<!-- MATERIAUX -->
+
+<section class="ov-section">
+
+<h2 class="ov-title">NOS MATÉRIAUX</h2>
+
+<!-- OR MASSIF -->
+<div class="ov-material">
+<div class="ov-img">
+<img src="{% static 'images/IMG_2732.JPG' %}">
+</div>
+<div>
+<h3>OR MASSIF</h3>
+<p>
+L’or massif est un métal précieux composé entièrement d’or.
+Durable, intemporel et hypoallergénique, il conserve son éclat
+au fil du temps et est conçu pour durer toute une vie.
+</p>
+<a href="{% url 'or' %}" class="ov-collection-btn">
+  NOTRE COLLECTION
+  <span class="arrow">→</span>
+</a>
+</div>
+</div>
+
+<!-- OR REMPLI -->
+<div class="ov-material">
+<div>
+<h3>OR REMPLI</h3>
+<p>
+L’or rempli 14K est un matériau durable et raffiné,
+offrant la beauté de l’or véritable sans en avoir le prix.
+Hypoallergénique, idéal pour les peaux sensibles.
+</p>
+<a href="{% url 'orrempli' %}" class="ov-collection-btn">
+    NOTRE COLLECTION
+  <span class="arrow">→</span>
+</a>
+</div>
+<div class="ov-img">
+<img src="{% static 'images/IMG_2423.JPG' %}">
+</div>
+
+
+</div>
+
+<!-- ARGENT -->
+<div class="ov-material">
+<div class="ov-img">
+<img src="{% static 'images/IMG_2785.JPG' %}">
+</div>
+<div>
+<h3>ARGENT 925</h3>
+<p>
+Métal précieux composé de 92,5 % d’argent pur.
+Durable, élégant et adapté aux peaux sensibles.
+</p>
+<a href="{% url 'argent' %}" class="ov-collection-btn">
+    NOTRE COLLECTION
+
+  <span class="arrow">→</span>
+</a>
+</div>
+</div>
+
+<div class="ov-cta">
+<a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+target="_blank">
+PRENDRE RENDEZ-VOUS
+</a>
+</div>
+
+</section>
+
+<div class="ov-divider"></div>
+
+<!-- FAQ -->
+
+<!-- FAQ SECTION -->
+<section class="ov-section">
+
+<h2 class="ov-title">FAQ</h2>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Qu’est-ce qu’un bijou permanent ? <span>+</span></h4>
+<div class="ov-answer">
+Un bijou permanent est un bijou sans fermoir, ajusté à votre mesure et soudé directement sur vous.
+Il est conçu pour être porté au quotidien, comme un lien durable.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Est-ce que la soudure fait mal ? <span>+</span></h4>
+<div class="ov-answer">
+Non. La soudure est rapide, sécuritaire et sans douleur.
+Elle se fait en quelques secondes, sans contact direct avec la peau.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Est-ce sécuritaire pour la peau ? <span>+</span></h4>
+<div class="ov-answer">
+Oui. Les bijoux permanents Ovalia sont réalisés avec des matériaux de qualité,
+bien tolérés par la peau, y compris les peaux sensibles.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Peut-on enlever un bijou permanent ? <span>+</span></h4>
+<div class="ov-answer">
+Oui. Le bijou peut être retiré facilement à l’aide d’une petite coupe si nécessaire.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Puis-je passer les contrôles de sécurité (aéroport, IRM) ? <span>+</span></h4>
+<div class="ov-answer">
+Les bijoux permanents ne déclenchent généralement pas les détecteurs de métal.
+Toutefois, ils doivent être retirés avant un examen médical comme une IRM.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Les bijoux permanents résistent-ils à l’eau ? <span>+</span></h4>
+<div class="ov-answer">
+Oui. Ils sont conçus pour être portés au quotidien,
+incluant sous la douche, à la piscine ou à la plage.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Quelle est la durée de vie d’un bijou permanent ? <span>+</span></h4>
+<div class="ov-answer">
+Avec des matériaux de qualité et un usage normal,
+un bijou permanent peut durer plusieurs années.
+La durabilité dépend du matériau choisi et des habitudes de vie.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Puis-je offrir un bijou permanent en cadeau ? <span>+</span></h4>
+<div class="ov-answer">
+Oui. Il est possible d’offrir une carte-cadeau pour permettre à la personne
+de choisir son bijou et son moment.
+</div>
+</div>
+
+<div class="ov-accordion-item" onclick="toggleAcc(this)">
+<h4>Combien de temps dure le rendez-vous ? <span>+</span></h4>
+<div class="ov-answer">
+Le rendez-vous dure en moyenne entre 10 et 20 minutes,
+selon le bijou et les personnalisations choisies.
+</div>
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+function toggleAcc(el){
+const ans=el.querySelector('.ov-answer');
+ans.classList.toggle('show');
+}
+</script>
+
 {% endblock %}

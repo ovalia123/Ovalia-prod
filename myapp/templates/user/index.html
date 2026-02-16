@@ -1,421 +1,817 @@
-
 {% extends 'base.html' %}
 {% load static %}
-{% block content %}	
-  <body>
-    <style>
-      .oval-link {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        background-color: #f3ebe3;
-        color: #1c1c1c;
-        font-family: 'Georgia', serif;
-        min-height: 100vh;
-        align-items: center;
-        padding: 
-      }
-      
-      .oval-link .text {
-        padding: 20%;
-        background-color: #f3ebe3;
-      }
-      
-      .oval-link h2 {
-        font-size: 2.4rem;
-        font-weight: normal;
-        line-height: 1.3;
-        margin-bottom: 2rem;
-        font-family: 'Roboto', sans-serif;
-      }
-      
-      .oval-link p {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: #333;
-        margin-bottom: 2rem;
-      }
-      
-      .cta-btn {
-        display: inline-block;
-        background-color: #F3EBE3;
-        border: 3px solid #947459;
-        color: black;
-        text-decoration: none;
-        font-weight: bold;
-        padding: 0.8rem 1.5rem;
-        transition: background 0.3s ease;
-      }
-      
-      .cta-btn:hover {
-        background-color: #947459;
-      }
-      
-      .oval-link .media {
-        background-color: #947459;
-        display: flex;
-        align-items: center;
-        justify-content: left;
-        height: 100%;
-        overflow: hidden;
-        
-      }
-      
-      .oval-link .media img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        max-width:600px;
-        max-height:700px;
-        float:left;
-      }
-      
-      @media (max-width: 768px) {
-        .oval-link {
-          grid-template-columns: 1fr;
-        }
-      
-        .oval-link .media {
-          order: -1;
-        }
-      
-        .oval-link .text {
-          padding: 2rem;
-          text-align: center;
-        }
-      
-        .cta-btn {
-          margin-top: 1.5rem;
-        }
-      }
-      @media (max-width: 768px) {
-        .oval-link {
-          grid-template-columns: 1fr;
-        }
-      
-        .oval-link .media {
-          order: -1;
-        }
-      
-        .oval-link .text {
-          padding: 2rem;
-          text-align: center;
-        }
-      
-        .cta-btn {
-          margin-top: 1.5rem;
-        }
-      }
+{% block content %}
 
-      .testimonial {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        background-color: #f3ebe3;
-        padding: 4rem 2rem;
-        align-items: center;
-        font-family: 'Georgia', serif;
-        gap: 2rem;
-      }
-      
-      .testimonial-text {
-        background-color: #f3ebe3;
-        padding: 2rem;
-      }
-      
-      .testimonial-text h2 {
-        font-size: 2rem;
-        font-weight: normal;
-        margin-bottom: 1rem;
-        font-family: 'Dancing Script', cursive;
-      }
-      
-      .stars {
-        font-size: 1.5rem;
-        color: #c9a063;
-        margin-bottom: 1rem;
-      }
-      
-      .testimonial-text p {
-        font-size: 1rem;
-        line-height: 1.8;
-        margin-bottom: 1rem;
-        color: #333;
-      }
-      
-      .testimonial-text .author {
-        font-weight: bold;
-        margin-bottom: 1.5rem;
-      }
-      
-      .read-more-btn {
-        padding: 0.7rem 1.5rem;
-        background: none;
-        border: 1px solid #b48b66;
-        color: #1c1c1c;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s;
-      }
-      
-      .read-more-btn:hover {
-        background: #c9a063;
-        color: white;
-      }
-      
-      .testimonial-image-wrapper {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      
-      .image-background {
-        position: absolute;
-        top: 2rem;
-        left: 2rem;
-        background-color: #9d846d;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        border-radius: 0.5rem;
-      }
-      
-      .testimonial-image {
-        max-width: 100%;
-        border-radius: 0.5rem;
-        z-index: 1;
-        position: relative;
-        object-fit: cover;
-      }
-      
-      @media (max-width: 768px) {
-        .testimonial {
-          grid-template-columns: 1fr;
-        }
-      
-        .testimonial-image-wrapper {
-          margin-top: 2rem;
-        }
-      }
-      </style>
-    <!-- Start Header/Navigation -->
-    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-      <div class="container">
-      <a class="navbar-brand" href={% url 'index' %}><img class="logo" src={% static 'images/big_logo_black.png' %} alt="Ovalia Atelier"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarsFurni">
-        <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-          <li class="nav-item active">
-            <a class="nav-link" href= {% url 'index' %}>Accueil</a>
-          </li>
-            <a class="nav-link" style="text-color:black;" href="{% url 'boutique' %}">Boutique</a>
-          </li>
-          <li><a class="nav-link" href={% url 'shop' %}>Bracelet</a></li>
-          
-          <li><a class="nav-link" href={% url 'event' %}>Evenement</a></li>
-          <li><a class="nav-link" href={% url 'faq' %}>FAQ</a></li>
-          <li><a class="nav-link" href={% url 'contact' %}>Contact</a></li>
-			    <li><a class="nav-link" href="{% url 'cart' %}"><img src={% static 'images/cart.svg' %}></a></li>
+<style>
 
-        </ul>
-       
-      </div>
-      </div>
-    </nav>
-  
-    <!-- End Header/Navigation -->
-  
-    <!-- End Hero Section -->
-    <section class="oval-link">
-      <div class="text">
-        <h2>UN LIEN, UN LIEN INVISIBLE – NOUS LE RENDONS VISIBLE</h2>
-        <p>
-          Nos bracelets sont plus que de simples accessoires – ils sont le symbole de votre amour, de votre amitié ou de votre complicité.
-          En transformant ce lien invisible en un bracelet visible, nous créons des souvenirs qui durent toute une vie.
-          Nos bracelets permanents sont une manière unique de célébrer votre relation et de montrer de manière très personnelle ce que vous représentez l’un pour l’autre.
-        </p>
-        <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services" target="_blank" class="cta-btn">Prendre rendez-vous</a>
-      </div>
-      <div class="media">
-        <img src={% static 'images/EA6A4DEF-28D7-445E-9CB0-006D09C280FF.JPG' %} alt="Ovalia Atelier"></div>
-      </div>
-    </section>
+/* ===== GLOBAL ===== */
+
+.ov-wrap{
+max-width:1200px;
+margin:auto;
+padding:0 30px;
+font-family:"Playfair Display", serif;
+}
+
+.center-btn{
+text-align:center;
+margin-top:40px;
+}
+
+/* RDV BUTTON */
+
+.btn-rdv{
+padding:12px 34px;
+border:1.5px solid #000;
+text-decoration:none;
+color:#000;
+letter-spacing:2px;
+font-size:14px;
+transition:.3s;
+display:inline-block;
+}
+
+.btn-rdv:hover{
+background:#000;
+color:#fff;
+}
+
+/* ===== HERO (UNCHANGED) ===== */
+
+.hero-ovalia{
+position:relative;
+width:100%;
+height:92vh;
+overflow:hidden;
+background:#000;
+}
+
+.hero-img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero-ovalia::after{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.28);
+}
+
+.hero-overlay{
+position:absolute;
+inset:0;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+z-index:2;
+padding:20px;
+}
+
+.hero-overlay h1{
+color:#fff;
+font-size:44px;
+letter-spacing:2px;
+text-transform:uppercase;
+font-weight:500;
+max-width:900px;
+line-height:1.4;
+}
+
+.hero-signature{
+margin-top:18px;
+letter-spacing:4px;
+color:#fff;
+opacity:.85;
+font-size:14px;
+}
+
+.hero-btn{
+margin-top:28px;
+padding:12px 34px;
+border:1.5px solid #fff;
+color:#fff;
+text-decoration:none;
+letter-spacing:2px;
+font-size:14px;
+transition:.3s;
+}
+
+.hero-btn:hover{
+background:#fff;
+color:#000;
+}
 
 
+/* ===== CATEGORY SECTION ===== */
+
+.categories{
+padding:100px 0;
+background:#f8f6f3;
+}
+
+.cat-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:26px;
+}
+/* FEATURED TITLE */
+
+.featured-title{
+text-align:center;
+font-family:"Playfair Display", serif;
+letter-spacing:2px;
+font-size:28px;
+margin-bottom:50px;
+}
+
+/* MAKE CARD FULLY CLICKABLE */
+
+.product-card{
+text-decoration:none;
+color:inherit;
+display:block;
+}
+
+/* CENTER BUTTON */
+
+.center-btn{
+text-align:center;
+margin-top:50px;
+}
+
+/* CARD */
+
+.cat-card{
+position:relative;
+overflow:hidden;
+border-radius:18px;
+display:block;
+cursor:pointer;
+}
+
+/* IMAGE */
+
+.cat-card img{
+width:100%;
+height:340px;
+object-fit:cover;
+transition:transform .6s cubic-bezier(.19,1,.22,1);
+}
+
+/* DARK LUXURY OVERLAY */
+
+.cat-card::after{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.28);
+transition:.4s;
+}
+
+/* TEXT */
+
+.cat-card span{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:#fff;
+font-family:"Playfair Display", serif;
+letter-spacing:3px;
+font-size:20px;
+z-index:2;
+}
+
+/* HOVER EFFECT */
+
+.cat-card:hover img{
+transform:scale(1.08);
+}
+
+.cat-card:hover::after{
+background:rgba(0,0,0,.45);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+.cat-grid{
+grid-template-columns:1fr;
+}
+.cat-card img{
+height:280px;
+}
+}
+
+/* ===== FEATURED ===== */
+
+/* ===== HOME FEATURED ===== */
+
+.home-featured{
+padding:120px 0 100px;
+text-align:center;
+background:#faf9f7;
+}
+
+.home-featured h2{
+font-family:"Playfair Display", serif;
+font-size:34px;
+letter-spacing:2px;
+margin-bottom:60px;
+}
+
+/* grid */
+
+.featured-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:40px;
+max-width:1000px;
+margin:auto;
+}
+
+.featured-card{
+border-radius:18px;
+overflow:hidden;
+display:block;
+transition:.4s ease;
+box-shadow:0 12px 30px rgba(0,0,0,.05);
+}
+
+.featured-card img{
+width:100%;
+height:320px;
+object-fit:cover;
+transition:.4s ease;
+}
+
+/* hover luxury */
+
+.featured-card:hover{
+transform:translateY(-8px);
+box-shadow:0 25px 45px rgba(0,0,0,.15);
+}
+
+.featured-card:hover img{
+transform:scale(1.05);
+}
+
+/* ===== EXPERIENCE SECTION ===== */
+
+.experience{
+padding:140px 0;
+background:#fff;
+}
+
+.experience-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:80px;
+align-items:center;
+max-width:1100px;
+margin:auto;
+}
+
+.experience img{
+width:100%;
+border-radius:20px;
+box-shadow:0 20px 40px rgba(0,0,0,.12);
+}
+
+.experience h2{
+font-family:"Playfair Display", serif;
+font-size:38px;
+margin-bottom:20px;
+}
+
+.experience p{
+color:#666;
+line-height:1.8;
+margin-bottom:18px;
+font-size:15px;
+}
+
+/* BUTTON */
+
+.btn-rdv{
+display:inline-block;
+margin-top:20px;
+padding:14px 38px;
+border:1.5px solid #000;
+text-decoration:none;
+color:#000;
+font-family:"Playfair Display", serif;
+letter-spacing:2px;
+font-size:14px;
+transition:.3s;
+}
+
+.btn-rdv:hover{
+background:#000;
+color:#fff;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.featured-grid{
+grid-template-columns:1fr;
+}
+
+.experience-grid{
+grid-template-columns:1fr;
+gap:40px;
+}
+
+}
+
+
+/* ===== TESTIMONIALS ===== */
+
+/* ===== TESTIMONIAL WOW ===== */
+
+.testimonial-section{
+padding:120px 0;
+background:#faf8f6;
+text-align:center;
+font-family:"Playfair Display", serif;
+}
+
+.testimonial-wrapper{
+max-width:900px;
+margin:auto;
+}
+
+.testimonial-section h2{
+font-size:34px;
+letter-spacing:3px;
+margin-bottom:60px;
+}
+
+.testimonial-carousel{
+position:relative;
+overflow:hidden;
+}
+
+.testimonial-track{
+display:flex;
+transition:transform .6s cubic-bezier(.77,0,.18,1);
+}
+
+.testimonial-card{
+min-width:100%;
+padding:40px 20px;
+opacity:.6;
+transform:scale(.95);
+transition:.4s;
+}
+
+.testimonial-card.active{
+opacity:1;
+transform:scale(1);
+}
+
+.testimonial-card p{
+font-size:18px;
+line-height:1.7;
+margin-bottom:20px;
+color:#333;
+}
+
+.testimonial-card span{
+font-size:14px;
+letter-spacing:1px;
+color:#777;
+}
+
+/* arrows */
+
+/* ===== TESTIMONIAL ARROWS CLEAN ===== */
+
+.arrow{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+background:transparent;
+border:none;
+color:rgba(0, 0, 0, 0.85);
+font-size:34px;
+cursor:pointer;
+z-index:20;
+transition:.3s ease;
+}
+
+.arrow.left{
+left:12px;
+}
+
+.arrow.right{
+right:12px;
+}
+
+.arrow:hover{
+color:#fff;
+transform:translateY(-50%) scale(1.2);
+}
 
 
 
+/* RDV button */
+
+.btn-rdv{
+display:inline-block;
+margin-top:50px;
+padding:12px 34px;
+border:1px solid #000;
+text-decoration:none;
+color:#000;
+letter-spacing:2px;
+font-size:14px;
+transition:.3s;
+}
+
+.btn-rdv:hover{
+background:#000;
+color:#fff;
+}
+
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:900px){
+
+.featured-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.cat-grid{
+grid-template-columns:1fr;
+}
+
+.experience-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+
+/* ===== SHOP CARD STYLE FOR HOME FEATURED ===== */
+
+.products-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+max-width:1100px;
+margin:auto;
+}
+
+.shop-card{
+background:#fff;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 18px 35px rgba(0,0,0,.08);
+transition:.35s ease;
+display:block;
+}
+
+.shop-card:hover{
+transform:translateY(-6px);
+box-shadow:0 28px 50px rgba(0,0,0,.15);
+}
+
+.shop-card img{
+width:100%;
+height:320px;
+object-fit:cover;
+display:block;
+}
+
+.shop-card-body{
+padding:22px;
+text-align:left;
+}
+
+.shop-category{
+font-size:.75rem;
+letter-spacing:1px;
+text-transform:uppercase;
+color:#7a6f65;
+margin-bottom:8px;
+}
+
+.shop-card-body h5{
+font-size:1.1rem;
+margin:0 0 6px;
+}
+
+.shop-price{
+font-weight:500;
+font-size:15px;
+}
+
+/* clickable card fix */
+.product-card{
+text-decoration:none;
+color:inherit;
+display:block;
+}
+
+/* responsive */
+@media(max-width:900px){
+.products-grid{
+grid-template-columns:1fr;
+}
+}
+/* ===== EXPERIENCE MOBILE FIX ===== */
+
+@media(max-width:900px){
+
+.experience-grid{
+display:flex;
+flex-direction:column;
+gap:40px;
+padding:0 20px;
+}
+
+.experience img{
+width:100%;
+height:auto;
+border-radius:16px;
+}
+
+.experience h2{
+font-size:26px;
+text-align:center;
+}
+
+.experience p{
+text-align:center;
+}
+
+
+}
+/* ===== PERFECT SQUARE CATEGORY CARDS ===== */
+
+.cat-card{
+position:relative;
+aspect-ratio:1 / 1;
+border-radius:20px;
+overflow:hidden;
+}
+
+.cat-card img{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+</style>
+
+
+<!-- ===== HERO ===== -->
+
+<section class="hero-ovalia">
+
+<img src="{% static 'images/EA6A4DEF-28D7-445E-9CB0-006D09C280FF.JPG' %}"
+class="hero-img">
+
+<div class="hero-overlay">
+<h1>
+CE N'EST PAS UN BRACELET,<br>
+C'EST UN LIEN QUE TU CHOISIS DE PORTER.
+</h1>
+
+<p class="hero-signature">linked not locked</p>
+
+<a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+target="_blank"
+class="hero-btn">
+PRENDRE RENDEZ-VOUS
+</a>
+
+</div>
+</section>
+
+
+<!-- ===== PRODUITS COUP DE COEUR ===== -->
+
+<!-- ===== PRODUITS COUP DE COEUR ===== -->
+
+<section class="home-featured">
+<div class="ov-wrap">
+
+<h2 class="featured-title">PRODUITS COUP DE CŒUR</h2>
+
+<div class="products-grid">
+
+{% for product in featured_products %}
+
+<a href="{% url 'sale_detail' product.id %}" class="product-card">
+
+<div class="shop-card">
+
+{% if product.image %}
+<img src="{{ product.image.url }}" alt="{{ product.name }}">
+{% else %}
+<img src="{% static 'images/product-1.png' %}" alt="">
+{% endif %}
+
+<div class="shop-card-body">
+
+<p class="shop-category">
+{{ product.materiaux }}
+</p>
+
+<h5>
+{{ product.name }}
+</h5>
+
+<div class="shop-price">
+${{ product.price }}
+</div>
+
+</div>
+
+</div>
+
+</a>
+
+{% endfor %}
+
+</div>
+
+<div class="center-btn">
+<a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+class="btn-rdv">
+PRENDRE RENDEZ-VOUS
+</a>
+</div>
+
+</div>
+</section>
 
 
 
+<!-- ===== EXPÉRIENCE OVALIA ===== -->
+<section class="experience">
+
+<div class="experience-grid">
+
+<img src="{% static 'images/IMG_2785.JPG' %}">
+
+<div>
+
+<h2>L’EXPÉRIENCE OVALIA</h2>
+
+<p>
+Ovalia est une marque de bijoux permanent centrée sur le choix.
+Le choix de porter un lien. Le choix de quelque chose qui reste.
+</p>
+
+<p>
+Ovalia ne vend pas de bracelets.
+Ovalia crée des rituels autour des liens humains.
+</p>
+
+<div class="center-btn">
+<a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+class="btn-rdv">
+PRENDRE RENDEZ-VOUS
+</a>
+</div>
 
 
+</div>
+
+</div>
+</section>
 
 
+<!-- ===== CATÉGORIES ===== -->
+
+<section class="categories">
+<div class="ov-wrap">
+
+<div class="cat-grid">
+
+<a href="{% url 'shop' %}" class="cat-card">
+<img src="{% static 'images/IMG_3065.JPG' %}">
+<span>BRACELETS</span>
+</a>
+
+<a href="#" class="cat-card">
+<img src="{% static 'images/IMG_0306.JPG' %}">
+<span>COLLIERS</span>
+</a>
+
+<a href="#" class="cat-card">
+<img src="{% static 'images/IMG_2898.JPG' %}">
+<span>BOUCLES D’OREILLES</span>
+</a>
+
+</div>
+
+</div>
+</section>
 
 
-    <div class="untree_co-section product-section" style="background-color:;">
-      <div class="container">
-        
-        <h3 class="product-title" style="font-size:70px;font-weight:2000;">Découvrez une vaste sélection de bracelets</h3>
-        <p "product-price"> Explore notre sélection raffinée de bracelets permanents et choisis la chaîne qui sublimera ton style.
-        Que tu recherches l’éclat prestigieux de l’or massif 14k, la solidité accessible de l’or massif 10k, la brillance durable de l’or rempli (Gold Filled) ou l’élégance classique de l’argent sterling (.925), tu trouveras chez Ovalia le bijou qui te correspond.</p>
-        <div class="row">
-          <!-- Products Grid -->
-          <div class="col-md-12 col-lg-12">
-            <div class="row">
-                <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                  <div class="product-item" href="">
-                    <img src={% static 'images/back.jpg' %} class="img-card">
-                    <h3 class="product-title">Or massif 14k</h3>
-                    <br>
-                    <p><a href="{% url 'or14k' %}" class="btn-card">Explorer</a></p>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                  <div class="product-item" href="">
-                    <img src={% static 'images/IMG_8451.JPG' %} class="img-card">
-                    <h3 class="product-title">Or massif 10k</h3>
-                    <br>
-                    <p><a href="{% url 'or10k' %}" class="btn-card">Explorer</a></p>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                  <div class="product-item" href="">
-                    <img src={% static 'images/IMG_0689.JPG' %} class="img-card">
-                    <h3 class="product-title">Or rempli</h3>
-                    <br>
-                    <p><a href="{% url 'orrempli' %}" class="btn-card">Explorer</a></p>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                  <div class="product-item" href="">
-                    <img src={% static 'images/IMG_4827.JPG' %} class="img-card">
-                    <h3 class="product-title">Argent sterling</h3>
-                    <br>
-                    <p><a href="{% url 'argent' %}" class="btn-card">Explorer</a></p>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                  <div class="product-item" href="">
-                    <img src={% static 'images/charms.jpg' %} class="img-card">
-                    <h3 class="product-title">Charms</h3>
-                    <br>
-                    <p><a href="{% url 'charms' %}" class="btn-card">Explorer</a></p>
-                  </div>
-                </div>
-                <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                  <div class="product-item" href="">
-                    <img src={% static 'images/tennis.webp' %} class="img-card">
-                    <h3 class="product-title">Tennis</h3>
-                    <br>
-                    <p><a href="{% url 'tennis' %}" class="btn-card">Explorer</a></p>
-                  </div>
-                </div>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- ===== TÉMOIGNAGES ===== -->
 
+<!-- ===== TEMOIGNAGES WOW CAROUSEL ===== -->
 
+<section class="testimonial-section">
 
+<div class="testimonial-wrapper">
 
+<h2>TÉMOIGNAGES</h2>
 
+<div class="testimonial-carousel">
 
+<button class="arrow left">&#10094;</button>
 
+<div class="testimonial-track">
 
+<div class="testimonial-card active">
+<p>
+Super expérience mère/fille. Bracelet magnifique.
+Service très humain.
+</p>
+<span>— Jessica Chaloux</span>
+</div>
 
-    <!-- Start Product Section -->
-  
-    <!-- End Product Section -->
-  
-    <!-- Start Why Choose Us Section -->
- 
-    <!-- End Why Choose Us Section -->
-  
-    <!-- ... les autres sections (We Help, Blog, Testimonials, Footer) continuent avec le même principe de mise à jour -->
-  
-    <!-- ... (sections précédentes inchangées) ... -->
-  
-    <!-- Start We Help Section -->
-    <div class="we-help-section" style="background-color:white;">
-    <div class="container">
-      <div class="row justify-content-between">
-      <div class="col-lg-7 mb-5 mb-lg-0">
-        <div class="imgs-grid">
-        <div class="grid grid-1"><img src={% static 'images/IMG_2785.JPG' %} alt="Ovalia Atelier"></div>
-        <div class="grid grid-2"><img src=	{% static 'images/IMG_8451.JPG' %} alt="Bijoux Personnalisés"></div>
-        <div class="grid grid-3"><img src=	{% static 'images/EA6A4DEF-28D7-445E-9CB0-006D09C280FF.JPG' %} alt="Création Collaborative"></div>
-        </div>
-      </div>
+<div class="testimonial-card">
+<p>
+Moment unique avec ma meilleure amie.
+Je recommande totalement Ovalia.
+</p>
+<span>— Camille</span>
+</div>
 
-      <div class="col-lg-5 ps-lg-5">
-        <h3 class="product-title" style="font-size:40px;font-weight:2000;">Pourquoi choisir Ovalia ?</h3>
-            <p>Ovalia vous propose bien plus que des bijoux : une expérience de création unique, un service client à l'écoute, et un engagement envers l’artisanat local.</p>
-            <div class="row my-5">
-              <div class="col-6 col-md-6">
-                <div class="feature">
-                  <div class="icon">
-                    <img src={% static 'images/truck.svg' %} alt="Livraison" class="imf-fluid">
-                  </div>
-                  <h3>Livraison rapide </h3>
-                  <p>Commandez en ligne et recevez vos bijoux rapidement.</p>
-                </div>
-              </div>
-              <div class="col-6 col-md-6">
-                <div class="feature">
-                  <div class="icon">
-                    <img src={% static 'images/bag.svg' %} alt="Facile" class="imf-fluid">
-                  </div>
-                  <h3>Commande simplifiée</h3>
-                  <p>Un site pensé pour vous permettre de réserver un atelier ou acheter un bijou en quelques clics.</p>
-                </div>
-              </div>
-              <div class="col-6 col-md-6">
-                <div class="feature">
-                  <div class="icon">
-                    <img src={% static 'images/support.svg' %} alt="Support" class="imf-fluid">
-                  </div>
-                  <h3>Service client</h3>
-                  <p>Notre équipe est disponible en tout temps pour répondre à vos questions et vous guider.</p>
-                </div>
-              </div>
-              <div class="col-6 col-md-6">
-                <div class="feature">
-                  <div class="icon">
-                    <img src={% static 'images/return.svg' %} alt="Retour" class="imf-fluid">
-                  </div>
-                  <h3>Retour facile</h3>
-                  <p>Remplacement unique gratuit si votre breloque du bijou permanent est perdue ou cassée dans les 7* jours suivant l'achat d'origine. </p>
-                </div>
-              </div>
-            </div>
-      </div>
-      </div>
-    </div>
-    </div>
-    <!-- End We Help Section -->
-    
+<div class="testimonial-card">
+<p>
+Service incroyable et chaleureux.
+Bijoux magnifiques.
+</p>
+<span>— Sophie</span>
+</div>
 
+</div>
 
-    <section class="testimonial">
-      <div class="testimonial-text">
-        <h2>Ce que disent nos clients</h2>
-        <div class="stars">★★★★★</div>
-        <p>
-          Nous sommes allés pour une activité mère/fille. Nous avons adoré notre expérience, ma fille était ravie de son bracelet. J'adore le mien également. Beaucoup de choix donc ça été plus long choisir que de le faire car nous voulions notre bracelet parfait et la propriétaire était super patiente. Je recommande fortement.
-        </p>
-        <p class="author">– Jessica Chaloux</p>
-      </div>
-      <div class="testimonial-image-wrapper">
-        <div class="image-background"></div>
-        <img src={% static 'images/2551DB84-BAAB-44D5-9E76-E42FBEE7586F.JPG' %} alt="Clients heureux" class="testimonial-image">
-      </div>
-    </section>
-  
-    
-  </body>
-  {% endblock %}
+<button class="arrow right">&#10095;</button>
+
+</div>
+
+<a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+class="btn-rdv">
+PRENDRE RENDEZ-VOUS
+</a>
+
+</div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", ()=>{
+
+const track = document.querySelector(".testimonial-track");
+const cards = document.querySelectorAll(".testimonial-card");
+const nextBtn = document.querySelector(".arrow.right");
+const prevBtn = document.querySelector(".arrow.left");
+
+let index = 0;
+
+function updateCarousel(){
+track.style.transform = `translateX(-${index * 100}%)`;
+
+cards.forEach(c=>c.classList.remove("active"));
+cards[index].classList.add("active");
+}
+
+/* arrows */
+
+nextBtn.onclick = ()=>{
+index = (index + 1) % cards.length;
+updateCarousel();
+};
+
+prevBtn.onclick = ()=>{
+index = (index - 1 + cards.length) % cards.length;
+updateCarousel();
+};
+
+/* auto slide */
+
+setInterval(()=>{
+index = (index + 1) % cards.length;
+updateCarousel();
+}, 4500);
+
+});
+</script>
+
+{% endblock %}

@@ -1,120 +1,272 @@
 {% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
+{% block content %}
 
-<html lang="fr">
+<style>
 
-{% block content %}	
-<body>
-  <!-- Start Header/Navigation -->
-  <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-		<div class="container">
-		<a class="navbar-brand" href={% url 'index' %}><img class="logo" src={% static 'images/big_logo_black.png' %} alt="Ovalia Atelier"></a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarsFurni">
-			<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-				<li>
-					<a class="nav-link" href= {% url 'index' %}>Accueil</a>
-				</li>
-				</li>
-          <a class="nav-link" style="text-color:black;" href="{% url 'boutique' %}">Boutique</a>
-        </li>
-        <li class="nav-item active"><a class="nav-link" href={% url 'shop' %}>Bracelet</a></li>
-        
-        <li><a class="nav-link" href={% url 'event' %}>Evenement</a></li>
-        <li ><a class="nav-link" href={% url 'faq' %}>FAQ</a></li>
-        <li><a class="nav-link" href={% url 'contact' %}>Contact</a></li>
-        <li><a class="nav-link" href="{% url 'cart' %}"><img src={% static 'images/cart.svg' %}></a></li>
-			</ul>
-			
-		</div>
-		</div>
-	</nav>
-  <!-- End Header/Navigation -->
+/* ===== GLOBAL ===== */
 
-  <!-- Start Hero Section -->
-  
-  <!-- End Hero Section -->
+.ov-section{
+  font-family:"Playfair Display", serif;
+  background:#fff;
+  color:#2b2b2b;
+}
 
-  <!-- Start Product Section -->
-  <div class="untree_co-section product-section">
-    <div class="container">
-      
-      <h3 class="product-title">Or rempli</h3>
-      <p "product-price" >Les bijoux en or rempli se composent d’une couche solide d’or liée à un métal de base comme le laiton. Ils sont étanches et ne s’oxydent ni ne se corrodent facilement. Bien qu’ils soient moins chers que l’or massif, les bijoux en or rempli sont plus durables et peuvent durer des années avec un entretien minimal.</p>
-      <div class="row">
-        <!-- Products Grid -->
-        <div class="col-md-12 col-lg-12">
-          <div class="row">
-            {% for product in products %}
-            {% if product.available %}
-              <div class="col-12 col-md-6 col-lg-4 mb-5  product-card" data-material="{{ product.materiaux }}" data-name="{{ product.name|lower }}">
-                <a class="product-item" href="">
-                  {% if product.image %}
-                  <img src="{{ product.image.url }}" class="img-card">
-                  {% else %}
-                  <img src="/static/images/product-placeholder.jpg" class="img-fluid product-thumbnail">
-                  {% endif %}
-                  <h3 class="product-title">{{ product.name }}</h3>
-                  <p >Bracelet No. {{ product.numero }}  </p>
-                  <p >Comme bracelet - {{ product.poignee }} $ </p>
-                  <p >à la cheville - {{ product.cheville }} $ </p>
-                  <p >Au cou - sur soumission</p>
-                </a>
-              </div>
-            {% endif %}
-            {% empty %}
-            <div class="col-12">
-              <div class="alert alert-info">
-                Aucun produit disponible pour le moment.
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-          
-        </div>
-      </div>
-    </div>
+.ov-wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:0 30px;
+  margin-bottom:100px;
+}
+
+/* HERO */
+
+.ov-hero{
+  padding:90px 0 60px;
+  text-align:center;
+}
+
+.ov-hero h1{
+  font-size:40px;
+  letter-spacing:1px;
+  margin-bottom:10px;
+}
+
+.ov-hero p{
+  color:#7a6f65;
+  max-width:600px;
+  margin:auto;
+}
+
+/* SEARCH */
+
+.search-bar{
+  max-width:500px;
+  margin:40px auto 70px;
+}
+
+.search-bar input{
+  width:100%;
+  padding:14px 22px;
+  border-radius:30px;
+  border:1px solid #d7c5b3;
+}
+
+/* GRID */
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:28px;
+}
+
+/* CARD */
+
+.product-card{
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 18px 35px rgba(0,0,0,.08);
+  transition:.3s;
+  cursor:pointer;
+}
+
+.product-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 28px 45px rgba(0,0,0,.12);
+}
+
+/* IMAGE */
+
+.product-img{
+  width:100%;
+  height:320px;
+  object-fit:cover;
+}
+
+/* TEXT */
+
+.product-overlay{
+  padding:22px;
+  text-align:left;
+}
+
+.product-material{
+  font-size:.75rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#7a6f65;
+  margin-bottom:6px;
+}
+
+/* MODAL */
+
+.product-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.modal-content{
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  max-width:700px;
+  width:90%;
+  text-align:center;
+  position:relative;
+}
+
+.modal-content img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+.modal-close{
+  position:absolute;
+  top:10px;
+  right:20px;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+  .products-grid{ grid-template-columns:repeat(2,1fr); }
+}
+
+@media(max-width:600px){
+  .products-grid{ grid-template-columns:1fr; }
+}
+
+</style>
+
+
+<section class="ov-section">
+<div class="ov-wrap">
+
+<!-- HERO -->
+
+<div class="ov-hero">
+<h1>Or remplie</h1>
+<p>
+Découvrez nos créations en or remplie :
+des bijoux élégants et intemporels.
+</p>
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-bar">
+<input type="text" id="searchInput"
+placeholder="Rechercher un bijou...">
+</div>
+
+<!-- GRID -->
+
+<div class="products-grid">
+
+{% for product in products %}
+{% if product.available %}
+
+<div class="product-card"
+     data-name="{{ product.name }}"
+     data-numero="{{ product.numero }}"
+     data-description="{{ product.description }}"
+     data-image="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}">
+
+<img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}"
+     class="product-img">
+
+<div class="product-overlay">
+
+<p class="product-material">
+{{ product.materiaux }}
+</p>
+
+<h3>
+{{ product.name }} | {{ product.numero }}
+</h3>
+
+<p>Bracelet — {{ product.poignee }} $</p>
+<p>Cheville — {{ product.cheville }} $</p>
+<p>Cou — Sur soumission</p>
+
+</div>
+</div>
+
+{% endif %}
+{% endfor %}
+
+</div>
+</div>
+</section>
+
+
+<!-- MODAL -->
+
+<div id="productModal" class="product-modal">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+    <img id="modalImg">
+    <h2 id="modalTitle"></h2>
+    <p id="modalDesc"></p>
   </div>
-  <!-- End Product Section -->
+</div>
 
 
-  <!-- Start Workshop Promo Section -->
-  <!-- End Workshop Promo Section -->
+<script>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const checkboxes = document.querySelectorAll('.material-filter');
-        const products = document.querySelectorAll('.product-card');
-        const nameInput = document.getElementById('name-filter');
-      
-        function applyFilters() {
-          const selectedMaterials = Array.from(checkboxes)
-                                         .filter(c => c.checked)
-                                         .map(c => c.value);
-      
-          const nameFilter = nameInput.value.trim().toLowerCase();
-      
-          products.forEach(product => {
-            const material = product.dataset.material;
-            const name = product.dataset.name;
-      
-            const matchesMaterial = selectedMaterials.length === 0 || selectedMaterials.includes(material);
-            const matchesName = name.includes(nameFilter);
-      
-            if (matchesMaterial && matchesName) {
-              product.style.display = '';
-            } else {
-              product.style.display = 'none';
-            }
-          });
-        }
-      
-        checkboxes.forEach(cb => cb.addEventListener('change', applyFilters));
-        nameInput.addEventListener('input', applyFilters);
-      });
-      </script>
-      
+/* SEARCH */
+
+document.addEventListener("DOMContentLoaded",function(){
+
+const searchInput=document.getElementById("searchInput");
+const products=document.querySelectorAll(".product-card");
+
+searchInput.addEventListener("input",function(){
+const val=this.value.toLowerCase();
+
+products.forEach(p=>{
+p.style.display=p.dataset.name.toLowerCase().includes(val)?"":"none";
+});
+});
+
+/* CLICKABLE CARD MODAL */
+
+products.forEach(card=>{
+card.addEventListener("click",()=>{
+
+document.getElementById("modalImg").src=card.dataset.image;
+document.getElementById("modalTitle").innerText=
+card.dataset.name+" | "+card.dataset.numero;
+document.getElementById("modalDesc").innerText=
+card.dataset.description;
+
+document.getElementById("productModal").style.display="flex";
+
+});
+});
+
+document.querySelector(".modal-close").onclick=()=>{
+document.getElementById("productModal").style.display="none";
+};
+
+document.getElementById("productModal").onclick=e=>{
+if(e.target.id==="productModal")
+e.target.style.display="none";
+};
+
+});
+
+</script>
+
 {% endblock %}

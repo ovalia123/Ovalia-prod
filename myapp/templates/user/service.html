@@ -1,94 +1,319 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
-
 {% block content %}
-<body>
 
-    <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-		<div class="container">
-		<a class="navbar-brand" href="index.html"><img class="logo" src={% static 'images/big_logo_black.png' %} alt="Ovalia Atelier"></a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarsFurni">
-			<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-				<li>
-					<a class="nav-link" href= {% url 'index' %}>Accueil</a>
-				</li>
-				{% if request.user.is_authenticated %} <!-- Only displaying this for the logged users(members for this project) -->
-				<li>
-					<a class="nav-link" href="{% url 'member' %}">Membre</a>
-				</li>
-				{% endif %}
-				<li ><a class="nav-link" href={% url 'shop' %}>Bracelet</a></li>
-				<li class="nav-item active"><a class="nav-link" href={% url 'service' %}>Service</a></li>
-                <li ><a class="nav-link" href={% url 'event' %}>Evenement</a></li>
-				<li ><a class="nav-link" href={% url 'faq' %}>FAQ</a></li>
-				<li><a class="nav-link" href={% url 'contact' %}>Contact</a></li>
-			</ul>
-			<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-				{% if request.user.is_authenticated %}
-				
-					<li>
-					  <form method="POST" action="{% url 'logout' %}">
-						{% csrf_token %}
-						<button type="submit" class="btn-logout" ><a class="nav-link" >Logout</a></button>
-					  </form>
-					</li>
-			  {% else %}
-				<li>
-				  <a class="nav-link" href="{% url 'login' %}">
-					<img src="{% static 'images/user.svg' %}" alt="S'inscrire">
-				  </a>
-				</li>
-			  {% endif %}
-			<li><a class="nav-link" href="{% url 'cart' %}"><img src={% static 'images/cart.svg' %}></a></li>
-			</ul>
-		</div>
-		</div>
-	</nav>
+<style>
+/* =======================
+   OVALIA SERVICES (MATCH ABOUT PAGE)
+   ======================= */
 
-  <!-- Start Service Section -->
-  <div class="untree_co-section product-section">
-    <div class="container">
-      <h4 class="product-title">Bijoux Ovalia Service</h4>
-      <div class="row">
+.ov-services{
+  font-family:"Playfair Display", serif;
+  background:#fff;
+  color:#000;
+}
 
-        <!-- Carte Service 1 -->
-        <div class="col-12 col-md-6 col-lg-4 mb-5 product-card">
-          <div class="product-item">
-            <img src="{% static 'images/service1.jpg' %}" class="img-card" alt="Service 1">
-            <h3 class="product-title">Pose bijoux permanents</h3>
-            <p class="product-description">à partir de 55$ ・ 20 min</p>
-            <br>
-            <p><a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services" class="btn-card" target="_blank">Réserver</a></p>
-          </div>
-        </div>
-        <!-- Carte Service 6 -->
-        <div class="col-12 col-md-6 col-lg-4 mb-5 product-card">
-          <div class="product-item">
-            <img src="{% static 'images/service6.jpg' %}" class="img-card" alt="Service 6">
-            <h3 class="product-title">Resserrage / Réparation</h3>
-            <p class="product-description">10,00 $CA ・ 20 min</p>
-            <br>
-            <p><a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services" class="btn-card" target="_blank">Réserver</a></p>
-          </div>
-        </div>
+/* SECTION */
+.ov-section{
+  padding:120px 0;
+  position:relative;
+}
 
-        <!-- Carte Service 7 -->
-        <div class="col-12 col-md-6 col-lg-4 mb-5 product-card">
-          <div class="product-item">
-            <img src="{% static 'images/service7.jpg' %}" class="img-card" alt="Service 7">
-            <h3 class="product-title">Gravures</h3>
-            <p class="product-description">Le prix varie ・ 30 min</p>
-            <p><a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services" class="btn-card" target="_blank">Réserver</a></p>
-          </div>
-        </div>
+/* Fancy divider */
+.ov-section::after{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:120px;
+  height:3px;
+  background:#000;
+  opacity:.18;
+}
 
-      </div>
+/* WRAPPER */
+.ov-wrap{
+  max-width:1300px;
+  margin:auto;
+  padding:0 30px;
+}
+
+/* HERO */
+.ov-hero{
+  padding:110px 0 70px;
+  text-align:center;
+}
+
+.ov-hero h1{
+  font-size:54px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin:0 0 18px;
+}
+
+.ov-hero h1::after{
+  content:"";
+  width:90px;
+  height:3px;
+  background:#000;
+  display:block;
+  margin:18px auto 0;
+  opacity:.25;
+}
+
+.ov-hero p{
+  max-width:760px;
+  margin:22px auto 0;
+  font-size:19px;
+  line-height:2.1;
+}
+
+/* GRID (same spirit as about page) */
+.ov-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:90px;
+  align-items:center;
+}
+
+.ov-grid.reverse{
+  grid-template-columns:.95fr 1.05fr;
+}
+
+.ov-title{
+  font-size:44px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:26px;
+  position:relative;
+}
+
+.ov-title::after{
+  content:"";
+  width:80px;
+  height:3px;
+  background:#000;
+  display:block;
+  margin-top:16px;
+  opacity:.25;
+}
+
+.ov-text{
+  font-size:19px;
+  line-height:2.1;
+  margin-bottom:0;
+  opacity:.95;
+}
+
+/* IMAGE */
+.ov-media{
+  overflow:hidden;
+  border-radius:4px;
+}
+
+.ov-media img{
+  width:100%;
+  height:720px;
+  object-fit:cover;
+  transition:transform 1s cubic-bezier(.16,1,.3,1);
+}
+
+.ov-media:hover img{
+  transform:scale(1.06);
+}
+
+/* CTA */
+.cta-book{
+  text-align:center;
+  margin:70px 0 20px;
+}
+
+.cta-book a{
+  border:2px solid black;
+  padding:14px 32px;
+  text-decoration:none;
+  color:black;
+  letter-spacing:1px;
+  transition:.3s;
+  display:inline-block;
+}
+
+.cta-book a:hover{
+  background:black;
+  color:white;
+}
+
+/* ANIMATION */
+.fade-up{
+  opacity:0;
+  transform:translateY(50px);
+  transition:all 1.1s cubic-bezier(.16,1,.3,1);
+}
+
+.fade-up.show{
+  opacity:1;
+  transform:none;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+  .ov-hero{
+    padding:95px 0 50px;
+  }
+
+  .ov-hero h1{
+    font-size:38px;
+  }
+
+  .ov-section{
+    padding:90px 0;
+  }
+
+  .ov-grid,
+  .ov-grid.reverse{
+    grid-template-columns:1fr;
+    gap:44px;
+  }
+
+  .ov-title{
+    font-size:32px;
+  }
+
+  .ov-media img{
+    height:420px;
+  }
+}
+</style>
+
+<div class="ov-services">
+
+  <!-- HERO -->
+  <section class="ov-hero">
+    <div class="ov-wrap fade-up">
+      <h1>NOS SERVICES</h1>
+      <p>
+        Des services pensés pour préserver, ajuster et sublimer votre bijou permanent — avec la même précision, douceur
+        et attention qui définissent Ovalia.
+      </p>
     </div>
-  </div>
-  <!-- End Service Section -->
+  </section>
 
-</body>
+  <!-- 1) REPARATION / RESSERRAGE -->
+  <section class="ov-section">
+    <div class="ov-wrap ov-grid">
+
+      <div class="ov-media fade-up">
+        {# TODO: replace image path with your real photo #}
+        <img src="{% static 'images/1EA6A4DEF-28D7-445E-9CB0-006D09C280FF.JPG' %}" alt="Réparation et resserrage">
+      </div>
+
+      <div class="fade-up">
+        <h2 class="ov-title">RÉPARATION / RESSERRAGE</h2>
+        <p class="ov-text">
+          Avec le temps ou selon le mode de vie, un bijou permanent peut nécessiter un ajustement. Ovalia offre un service
+          de réparation et de resserrage afin de redonner à votre bijou son ajustement optimal. Que ce soit pour resserrer
+          un bijou devenu plus lâche ou réparer une section endommagée, chaque intervention est réalisée avec soin pour
+          préserver l’esthétique, le confort et la durabilité de votre lien.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 2) NETTOYAGE -->
+  <section class="ov-section">
+    <div class="ov-wrap ov-grid reverse">
+
+      <div class="fade-up">
+        <h2 class="ov-title">NETTOYAGE</h2>
+        <p class="ov-text">
+          Le nettoyage permet de raviver l’éclat de votre bijou permanent et de préserver sa beauté au fil du temps. Chez
+          Ovalia, chaque bijou est nettoyé avec soin à l’aide de méthodes douces et sécuritaires, adaptées aux matériaux
+          utilisés. Ce service aide à éliminer les résidus du quotidien et à redonner au bijou sa brillance naturelle,
+          tout en respectant la peau et la durabilité du lien.
+        </p>
+      </div>
+
+      <div class="ov-media fade-up">
+        {# TODO: replace image path with your real photo #}
+        <img src="{% static 'images/IMG_0689.JPG' %}" alt="Nettoyage bijou permanent">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3) INSTALLATION -->
+  <section class="ov-section">
+    <div class="ov-wrap ov-grid">
+
+      <div class="ov-media fade-up">
+        {# TODO: replace image path with your real photo #}
+        <img src="{% static 'images/IMG_3064.JPG' %}" alt="Installation bijou permanent">
+      </div>
+
+      <div class="fade-up">
+        <h2 class="ov-title">INSTALLATION</h2>
+        <p class="ov-text">
+          L’installation d’un bijou permanent est un moment simple et intentionnel. Chez Ovalia, chaque bijou est choisi
+          avec vous, ajusté précisément à votre mesure, puis soudé en quelques secondes, en toute sécurité et sans douleur.
+          Cette étape transforme le bijou en un lien durable, pensé pour être porté au quotidien avec confort et élégance.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4) PERÇAGE -->
+  <section class="ov-section">
+    <div class="ov-wrap ov-grid reverse">
+
+      <div class="fade-up">
+        <h2 class="ov-title">PERÇAGE</h2>
+        <p class="ov-text">
+          Chez Ovalia, le perçage est réalisé avec précision, douceur et attention. Chaque perçage est effectué dans un
+          environnement propre et sécuritaire, à l’aide de techniques adaptées et de bijoux de qualité, bien tolérés par
+          la peau. Nous prenons le temps de vous accompagner, de bien positionner le perçage et de s’assurer de votre
+          confort tout au long du processus, pour une expérience simple, sécuritaire et respectueuse de votre peau.
+        </p>
+      </div>
+
+      <div class="ov-media fade-up">
+        {# TODO: replace image path with your real photo #}
+        <img src="{% static 'images/IMG_2382.JPG' %}" alt="Service de perçage">
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="ov-section">
+    <div class="ov-wrap ov-media fade-up">
+      <img src="{% static 'images/IMG_2070.JPG' %}">
+      <div class="cta-book">
+      <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+          target="_blank">
+          PRENDRE RENDEZ-VOUS
+      </a>
+  </div>
+
+  </div>
+</section>
+
+
+</div>
+
+<script>
+const faders = document.querySelectorAll('.fade-up');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('show');
+  });
+},{ threshold: .2 });
+
+faders.forEach(el => observer.observe(el));
+</script>
+
 {% endblock %}

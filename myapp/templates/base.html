@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="author" content="mohamed Hanou">
+  <meta name="author" content="mohamed hanou">
   <link rel="shortcut icon" href="{% static 'images/logo.png' %}">
 
   <meta name="description" content="Bijoux sur mesure et ateliers créatifs" />
@@ -12,157 +12,514 @@
 
   <!-- Bootstrap CSS -->
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link href="{% static 'css/tiny-slider.css' %}" rel="stylesheet">
   <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  <!-- Font Awesome (ONE time only) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Playfair Display (REQUIRED by client) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Corinthia:wght@400;700&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <title>Ovalia</title>
-</head>
-
-
-{% block content %}
-
-{% endblock %}
 
   <style>
-    .footer-ovalia {
-      background-color: #f3ebe3;
-      color: #1c1c1c;
-      font-family: 'Georgia', serif;
-      padding: 2rem 1rem;
-      border-top: 1px solid #e6dcd2;
-    }
-  
-    .footer-columns {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-  
-    .footer-column {
-      flex: 1 1 250px;
-      margin: 1rem;
-    }
-  
-    .footer-column h4 {
-      color: #c9a063;
-      margin-bottom: 1rem;
-    }
-  
-    .footer-column ul {
-      list-style: none;
-      padding: 0;
-        list-style-type: none;
-      
-    }
-  
-    .footer-column ul li {
-      margin-bottom: 0.5rem;
-      font-size: 0.95rem;
-    }
-  
-    .footer-column ul li a {
-      text-decoration: none;
-      color: #1c1c1c;
-      transition: color 0.3s;
-    }
-  
-    .footer-column ul li a:hover {
-      color: #c9a063;
+    /* =========================================================
+       GLOBAL TYPOGRAPHY RULES (client request)
+       - Whole site uses Playfair Display
+       - Titles uppercase
+       - Descriptions lowercase
+       ========================================================= */
 
+    body {
+      font-family: "Playfair Display", serif !important;
+      color: #000;
+      background: #fff;
     }
-  
-    .footer-column p {
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
+
+    /* Titles = uppercase */
+    h1, h2, h3, h4, h5, h6,
+    .title, .section-title, .heading {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 500;
     }
-  
-  
-    .social-links a {
-      margin-right: 0.5rem;
+
+    /* Descriptions = lowercase (keep reasonable scope: text elements) */
+    p, .description, .desc,
+    li, a, span, small, label {
+      font-weight: 400;
+    }
+
+    /* Don't force lowercase on icons / brand marks / logo text wrappers */
+    i, svg, .navbar-brand, .footer-logo-wrap {
+      text-transform: none !important;
+    }
+
+    /* =========================================================
+       FOOTER — WHITE, PREMIUM, BLACK/WHITE ONLY
+       Keeps your Django links and structure unchanged
+       ========================================================= */
+
+    .footer-section {
+      background: #ffffff;
+      color: #111;
+      padding: 120px 0 26px;
+      border-top: 1px solid #e8e8e8;
+    }
+
+    .footer-section .container {
+      max-width: 1200px;
+    }
+
+    .footer-logo-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .footer-logo-wrap img.logo {
+      max-height: 200px;
+      width: auto;
+      filter: none !important;            /* prevents washed/odd color */
+      image-rendering: auto;
+      display: block;
+    }
+
+    .footer-section p.mb-4 {
+      margin: 0;
+      max-width: 520px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #222;
+    }
+
+    .footer-section h4 {
+      font-size: 13px;
+      letter-spacing: 3px;
+      margin: 0 0 18px;
+      color: #000;
+    }
+
+    .footer-section ul.list-unstyled {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .footer-section ul.list-unstyled li {
+      margin-bottom: 9px;
+    }
+
+    .footer-section ul.list-unstyled li a {
+      color: #111;
+      text-decoration: none;
+      font-size: 14px;
+      transition: transform .2s ease, opacity .2s ease;
       display: inline-block;
     }
-  
-    .footer-bottom {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #ffffff;
+
+    .footer-section ul.list-unstyled li a:hover {
+      opacity: .65;
+      transform: translateX(2px);
     }
-  
-    @media (max-width: 768px) {
-      .footer-columns {
-        flex-direction: column;
-        align-items: center;
+
+    /* socials — force BLACK (fix green issue) */
+    .custom-social {
+      display: flex;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .custom-social li {
+      margin: 0 !important;
+    }
+
+    .custom-social a {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #e6e6e6;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #000 !important;
+      background: #fff !important;
+      transition: transform .2s ease, opacity .2s ease, border-color .2s ease;
+      text-transform: none !important; /* don't lowercase icons */
+    }
+
+    .custom-social a i {
+      color: #000 !important;
+      font-size: 16px;
+      text-transform: none !important;
+    }
+
+    .custom-social a:hover {
+      opacity: .7;
+      transform: translateY(-2px);
+      border-color: #cfcfcf;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #ededed;
+      margin-top: 36px;
+      padding-top: 16px;
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+    }
+
+    /* spacing fixes (your screenshot looked too "floating") */
+    .footer-section .row.g-5.mb-5 {
+      align-items: start;
+      margin-bottom: 0 !important;
+    }
+
+    .footer-section .col-lg-4 br {
+      display: none; /* remove the double <br><br> gap */
+    }
+
+    /* responsive */
+    @media (max-width: 992px) {
+      .footer-section {
+        padding: 52px 0 22px;
       }
-  
-      .footer-column {
-        margin: 1rem 0;
+    }
+
+    @media (max-width: 768px) {
+      .footer-section .row {
         text-align: center;
       }
+
+      .footer-logo-wrap {
+        justify-content: center;
+      }
+
+      .custom-social {
+        justify-content: center;
+      }
+
+      .footer-section p.mb-4 {
+        margin: 0 auto;
+      }
     }
+    /* ===== NAVBAR ===== */
+    /* NAVBAR */
+    .ov-navbar{
+      height: 78px;
+      padding: 50px 26px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:#fff;
+      border-bottom:1px solid #eee;
+      position:sticky;
+      top:0;
+      z-index:1200;
+    }
+
+    .ov-logo{ display:flex; align-items:center; justify-content:center; }
+    .nav-logo{ height:65px; object-fit:contain; } /* keep perfect logo */
+
+    /* smaller buttons */
+    .icon-btn{
+      width:38px;
+      height:38px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      background:transparent;
+      border-radius:999px;
+      cursor:pointer;
+    }
+
+    .icon-btn i{
+      font-size:18px; /* smaller hamburger */
+      color:#000;
+    }
+
+    .cart-icon{
+      height:18px;     /* smaller cart */
+      width:auto;
+      filter:brightness(0);
+    }
+
+    /* OVERLAY */
+    .page-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      opacity:0;
+      pointer-events:none;
+      transition:.25s ease;
+      z-index:1100;
+    }
+    .page-overlay.active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
+    /* SIDE MENU */
+    .side-menu{
+      position:fixed;
+      top:0; left:-360px;
+      width:360px;
+      height:100%;
+      background:#fff;
+      z-index:1150;
+      padding:56px 34px;
+      transition:.32s ease;
+      box-shadow: 12px 0 45px rgba(0,0,0,.10);
+      margin-top: 60px;
+    }
+    .side-menu.open{ left:0; }
+
+    .menu-level{
+      display:none;
+      flex-direction:column;
+      gap:20px;
+    }
+    .menu-level.active{ display:flex; }
+
+    /* links */
+    .menu-level a,
+    .submenu-btn,
+    .back-btn{
+      font-family:"Playfair Display", serif;
+      font-size:18px;
+      color:#000;
+      text-decoration:none;
+      letter-spacing:.2px;
+      background:none;
+      border:none;
+      padding:0;
+      text-align:left;
+      cursor:pointer;
+    }
+    .menu-level a:hover,
+    .submenu-btn:hover{ opacity:.65; }
+
+    /* arrow in main menu */
+    .submenu-btn{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .chev{
+      font-size:18px;
+      opacity:.65;
+    }
+
+    /* BACK button */
+    .back-btn{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:16px;
+      opacity:.75;
+      margin-bottom:10px;
+    }
+    .back-btn:hover{ opacity:1; }
+    .back-ico{
+      font-size:20px;
+      line-height:1;
+    }
+
+    /* responsive */
+    @media (max-width:420px){
+      .side-menu{ width:320px; left:-320px; padding:52px 26px; }
+    }
+    .ov-divider{
+      width:200px;
+      height:3px;
+      background:#000;
+      margin:80px auto;
+      opacity:.25;
+      border-radius:2px;
+    }
+
+
   </style>
-  
+</head>
+
+<nav class="ov-navbar">
+  <!-- Left: hamburger -->
+  <button id="menuBtn" class="icon-btn" aria-label="Menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <!-- Center: logo -->
+  <a class="ov-logo" href="{% url 'index' %}" aria-label="Accueil">
+    <img class="nav-logo" src="{% static 'images/big_logo_black.png' %}" alt="Ovalia">
+  </a>
+
+  <!-- Right: cart -->
+  <a class="icon-btn" href="{% url 'cart' %}" aria-label="Panier">
+    <img class="cart-icon" src="{% static 'images/cart.svg' %}" alt="Panier">
+  </a>
+</nav>
+
+<!-- overlay -->
+<div id="overlay" class="page-overlay"></div>
+
+<!-- side menu -->
+<aside id="sideMenu" class="side-menu" aria-hidden="true">
+
+  <!-- LEVEL 1 -->
+  <div id="menuMain" class="menu-level active level-1">
+    <a href="{% url 'index' %}">Accueil</a>
+
+    <button class="submenu-btn" data-target="menuBijoux">
+      Bijoux permanents <span class="chev">›</span>
+    </button>
+
+    <button class="submenu-btn" data-target="menuBoutique">
+      Boutique <span class="chev">›</span>
+    </button>
+
+    <a href="{% url 'service' %}">Services</a>
+    <a href="">Linked not locked</a>
+    <a href="{% url 'about' %}">À propos</a>
+    <a href="{% url 'contact' %}">Nous contacter</a>
+  </div>
+
+  <!-- LEVEL 2: BIJOUX PERMANENTS -->
+  <div id="menuBijoux" class="menu-level">
+    <button class="back-btn" type="button">
+      <span class="back-ico">‹</span> retour
+    </button>
+
+    <a href="{% url 'or' %}">Or massif</a>
+    <a href="{% url 'orrempli' %}">Or rempli</a>
+    <a href="{% url 'argent' %}">Argent 925</a>
+    <a href="{% url 'shop' %}">Explorer le concept</a>
+  </div>
+
+  <!-- LEVEL 2: BOUTIQUE -->
+  <div id="menuBoutique" class="menu-level">
+    <button class="back-btn" type="button">
+      <span class="back-ico">‹</span> retour
+    </button>
+
+    <a href="{% url 'boutique' %}?category=Collier">Colliers</a>
+    <a href="{% url 'boutique' %}?category=Boucle doreille">Boucles d’oreilles</a>
+    <a href="{% url 'boutique' %}?category=Chaînes">Chaînes</a>
+    <a href="{% url 'boutique' %}?category=Bracelet">Bracelet</a>
+    <a href="{% url 'boutique' %}?category=Bijoux de mains">Bijoux de mains</a>
+    <a href="{% url 'boutique' %}?category=Accessoires">Accessoires</a>
+
+  </div>
+
+</aside>
+
+
+  {% block content %}
+  {% endblock %}
+
+  <!-- Footer (KEEP LINKS + DJANGO URLS exactly as you had) -->
+  <footer class="footer-section">
+    <div class="container relative">
+      <div class="row g-5 mb-5">
+
+        <div class="col-lg-3">
+          <div class="mb-4 footer-logo-wrap">
+            <a class="navbar-brand" href="/">
+              <img class="logo" src="{% static 'images/logo.png' %}" alt="Ovalia Atelier">
+            </a>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <p class="mb-4">
+            Ovalia est une maison de création de bijoux sur mesure qui vous invite à participer à la fabrication de vos propres pièces dans une ambiance chaleureuse et créative.
+          </p>
+
+          <ul class="list-unstyled custom-social">
+            <li>
+              <a href="https://www.instagram.com/ovaliabijoux/" target="_blank" rel="noopener">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/OvaliaBijoux/?locale=fr_FR" target="_blank" rel="noopener">
+                <i class="fa-brands fa-facebook-f"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-lg-5">
+          <h4>INFO</h4>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'faq' %}">FAQ</a></li>
+            <li><a href="{% url 'shop' %}">Réparations & Ajustements</a></li>
+            <li><a href="{% url 'event' %}">Nos événements</a></li>
+            <li><a href="{% url 'condition' %}">Conditions d'utilisation</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ovalia. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts (ONE bootstrap bundle only) -->
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'js/tiny-slider.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
   <script>
-    document.querySelectorAll('.social-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        console.log('Lien social cliqué : ' + link.href);
-      });
+    const menuBtn  = document.getElementById("menuBtn");
+    const sideMenu = document.getElementById("sideMenu");
+    const overlay  = document.getElementById("overlay");
+
+    function openMenu(){
+      sideMenu.classList.add("open");
+      overlay.classList.add("active");
+      sideMenu.setAttribute("aria-hidden", "false");
+    }
+    function closeMenu(){
+      sideMenu.classList.remove("open");
+      overlay.classList.remove("active");
+      sideMenu.setAttribute("aria-hidden", "true");
+      // always go back to main when closing
+      setActive("menuMain");
+    }
+
+    function setActive(id){
+      document.querySelectorAll(".menu-level").forEach(el => el.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    menuBtn.addEventListener("click", () => {
+      sideMenu.classList.contains("open") ? closeMenu() : openMenu();
     });
-  </script>
-  
 
-        <footer class="footer-section">
-            <div class="container relative">
-            
+    overlay.addEventListener("click", closeMenu);
 
-            <div class="row g-5 mb-5">
-                <div class="col-lg-3">
-                <div class="mb-4 footer-logo-wrap">
-                    <a class="navbar-brand" href="index.html"><img class="logo" src={% static 'images/logo.png' %} alt="Ovalia Atelier"></a>
-                </div>
-        
-                </div>
-                <div class="col-lg-4">
-                    <br><br>
-                    <p class="mb-4">Ovalia est une maison de création de bijoux sur mesure qui vous invite à participer à la fabrication de vos propres pièces dans une ambiance chaleureuse et créative.</p>
-                    <ul class="list-unstyled custom-social">
-                        <li><a href="https://www.instagram.com/ovaliabijoux/" target="_blank"><span class="fa fa-brands fa-instagram"></span></a></li>
-                        <li><a href="https://www.facebook.com/OvaliaBijoux/?locale=fr_FR" target="_blank"><span class="fa fa-brands fa-facebook-f" ></span></a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-5">
-                    <h4>INFO</h4>
-                    <ul class="list-unstyled">
-                      <li><a href= {% url 'faq' %}>FAQ</a></li>
-                      <li><a href= {% url 'shop' %}>Réparations & Ajustements</a></li>
-                      <li><a href= {% url 'event' %}>Nos événements</a></li>
-                      <li><a href= {% url 'condition' %}>Conditions d'utilisation</a></li>
-                    </ul>
-                  </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Ovalia. Tous droits réservés.</p>
-              </div>
-            </div>
-        </footer>
-        <!-- End Footer Section -->
+    // open submenus
+    document.querySelectorAll(".submenu-btn").forEach(btn => {
+      btn.addEventListener("click", () => setActive(btn.dataset.target));
+    });
 
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-        <script src="{% static 'js/tiny-slider.js' %}"></script>
-        <script src="{% static 'js/custom.js' %}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    // back buttons
+    document.querySelectorAll(".back-btn").forEach(btn => {
+      btn.addEventListener("click", () => setActive("menuMain"));
+    });
 
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
+    // ESC closes
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape" && sideMenu.classList.contains("open")) closeMenu();
+    });
+    </script>
 
 
-    </body>
 
+</body>
 </html>

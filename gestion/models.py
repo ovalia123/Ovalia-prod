@@ -19,15 +19,12 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     materiaux_choices = [
-        ('Or massif 14k', 'Or massif 14k'),
-        ('Or massif 10k', 'Or massif 10k'),
+        ('Or massif', 'Or massif'),
         ('Or rempli', 'Or rempli'),
         ('Argent sterling', 'Argent sterling'),
-        ('Charms', 'Charms'),
-        ('Tennis', 'Tennis'),
     ]
     materiaux = models.CharField(choices=materiaux_choices, max_length=50, default='Non defini')
-    numero = models.IntegerField(null=True, unique=True)
+    numero = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
@@ -35,10 +32,10 @@ class Product(models.Model):
 class Sales(models.Model):
     CATEGORY_CHOICES = [
         ("Collier", "Collier"),
-        ("Bague", "Bague"),
-        ("Bracelet de cheville", "Bracelet de cheville"),
+        ("Chaînes", "Chaînes"),
+        ("Bijoux de mains", "Bijoux de mains"),
         ("Bracelet", "Bracelet"),
-        ("Bijou de main", "Bijou de main"),
+        ("Accessoires", "Accessoires"),
         ("Boucle doreille", "Boucle doreille"),
     ]
     name = models.CharField(max_length=200, db_index=True)
@@ -48,12 +45,10 @@ class Sales(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     materiaux_choices = [
-        ('Or massif 14k', 'Or massif 14k'),
-        ('Or massif 10k', 'Or massif 10k'),
-        ('Or rempli / Gold filled', 'Or rempli / Gold filled'),
-        ('Argent sterling', 'Argent sterling'),
-        ('Charms', 'Charms'),
-        ('Tennis', 'Tennis'),
+        ('Acier inoxydable', 'Acier inoxydable'),
+        ('Or remplie', 'Or remplie'),
+        ('Argent 925', 'Argent 925'),
+        ('plaqué or', 'plaqué or'),
     ]
     materiaux = models.CharField(choices=materiaux_choices, max_length=255, default='Non defini')
 
@@ -75,8 +70,8 @@ class Order(models.Model):
     last_name = models.CharField(max_length=100)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
-    country = models.CharField(max_length=50, default="Canada")
+    postal_code = models.CharField(max_length=200)
+    country = models.CharField(max_length=500, default="Canada")
 
     total = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     stripe_session_id = models.CharField(max_length=255, unique=True)
@@ -92,4 +87,4 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
     sale = models.ForeignKey("Sales", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=100, decimal_places=2)

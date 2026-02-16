@@ -1,0 +1,208 @@
+{% load static %}
+
+<style>
+  /* =========================
+     OVALIA — MAINTENANCE PAGE
+     ========================= */
+
+  .ov-maintenance{
+    font-family:"Playfair Display", serif;
+    background:#fff;
+    color:#000;
+    min-height:calc(100vh - 120px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:70px 24px;
+  }
+
+  .ovm-wrap{
+    width:100%;
+    max-width:980px;
+    margin:0 auto;
+    text-align:center;
+  }
+
+  /* LOGO */
+  .ovm-logo{
+    display:flex;
+    justify-content:center;
+    margin-bottom:28px;
+  }
+  .ovm-logo img{
+    width:min(280px, 70vw);
+    height:auto;
+    display:block;
+  }
+
+  /* TITLE / TEXT */
+  .ovm-title{
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:44px;
+    margin:8px 0 12px;
+  }
+
+  .ovm-sub{
+    font-size:18px;
+    line-height:1.9;
+    max-width:720px;
+    margin:0 auto 34px;
+    opacity:.85;
+  }
+
+  /* CARD */
+  .ovm-card{
+    border:1px solid rgba(0,0,0,.12);
+    border-radius:8px;
+    padding:34px 26px;
+    max-width:720px;
+    margin:0 auto;
+  }
+
+  .ovm-divider{
+    width:90px;
+    height:2px;
+    background:#000;
+    opacity:.18;
+    margin:18px auto 28px;
+  }
+
+  /* CONTACT GRID */
+  .ovm-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:26px 34px;
+    text-align:left;
+    margin:0 auto 30px;
+  }
+
+  .ovm-item strong{
+    display:block;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    font-size:12px;
+    margin-bottom:8px;
+  }
+
+  .ovm-item p,
+  .ovm-item a{
+    font-size:17px;
+    line-height:1.7;
+    margin:0;
+    color:#000;
+    text-decoration:none;
+  }
+
+  .ovm-item a{
+    border-bottom:1px solid rgba(0,0,0,.35);
+    padding-bottom:2px;
+  }
+  .ovm-item a:hover{
+    opacity:.7;
+  }
+
+  /* CTA */
+  .ovm-cta{
+    margin-top:10px;
+    display:flex;
+    justify-content:center;
+  }
+
+  .ovm-cta a{
+    display:inline-block;
+    border:2px solid #000;
+    padding:14px 34px;
+    text-decoration:none;
+    color:#000;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    transition:.25s ease;
+  }
+  .ovm-cta a:hover{
+    background:#000;
+    color:#fff;
+  }
+
+  /* SMALL NOTE */
+  .ovm-note{
+    margin-top:18px;
+    font-size:14px;
+    opacity:.65;
+    line-height:1.7;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 820px){
+    .ovm-title{ font-size:34px; }
+    .ovm-grid{ grid-template-columns:1fr; }
+    .ovm-card{ padding:28px 18px; }
+  }
+</style>
+
+<section class="ov-maintenance">
+  <div class="ovm-wrap">
+
+    <!-- LOGO TOP CENTER -->
+    <div class="ovm-logo">
+      <img class="nav-logo" src="{% static 'images/big_logo_black.png' %}" alt="Ovalia">
+    </div>
+
+    <div class="ovm-card">
+      <h1 class="ovm-title">site en maintenance</h1>
+      <p class="ovm-sub">
+        Nous effectuons une mise à jour. En attendant, vous pouvez nous contacter ou prendre rendez-vous.
+      </p>
+
+      <div class="ovm-divider"></div>
+
+      <!-- CONTACT INFO -->
+      <div class="ovm-grid">
+
+        <div class="ovm-item">
+          <strong>téléphone</strong>
+          <p><a href="tel:+15147465469">514-746-5469</a></p>
+        </div>
+
+        <div class="ovm-item">
+          <strong>courriel</strong>
+          <p><a href="mailto:infoovaliabijoux@gmail.com">infoovaliabijoux@gmail.com</a></p>
+        </div>
+
+        <div class="ovm-item">
+          <strong>adresse boutique</strong>
+          <p>
+            40 rue saint-joseph<br>
+            sainte-thérèse, qc, j7e 3l6
+          </p>
+        </div>
+
+        <div class="ovm-item">
+          <strong>réseaux sociaux</strong>
+          <p>
+            <a href="https://www.instagram.com/ovaliabijoux/?hl=fr" target="_blank" rel="noopener">Instagram</a>
+            &nbsp;·&nbsp;
+            <a href="https://www.tiktok.com/@ovaliabijoux" target="_blank" rel="noopener">Tiktok</a>
+            &nbsp;·&nbsp;
+            <a href="https://www.facebook.com/OvaliaBijoux/?locale=fr_FR" target="_blank" rel="noopener">Facebook</a>
+          </p>
+        </div>
+
+      </div>
+
+      <!-- CTA BUTTON -->
+      <div class="ovm-cta">
+        <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
+           target="_blank" rel="noopener">
+          PRENDRE RENDEZ-VOUS
+        </a>
+      </div>
+
+      <div class="ovm-note">
+        Merci pour votre patience — on revient très vite.
+      </div>
+    </div>
+
+  </div>
+</section>
+
