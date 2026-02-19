@@ -7,7 +7,7 @@
 /* GLOBAL */
 
 .ov-page{
-font-family:"Playfair Display", serif;
+font-family:"Playfair Display", sans-serif;
 color:#000;
 background:#fff;
 }
@@ -230,6 +230,53 @@ height:400px;
   }
 
 }
+@media(max-width:900px){
+
+  .ov-grid,
+  .ov-material{
+    grid-template-columns:1fr;
+  }
+
+  /* FORCE IMAGE FIRST ON MOBILE */
+  .ov-material .ov-img{
+    order:1;
+  }
+
+  .ov-material > div:not(.ov-img){
+    order:2;
+  }
+
+}
+
+/* ===== LUXURY TITLE DIVIDER ===== */
+
+.ov-title{
+  position:relative;
+  display:inline-block;
+  padding-bottom:18px;
+}
+
+/* Ligne principale */
+.ov-title::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:80px;
+  height:2px;
+  background:#000;
+}
+
+/* Ligne gold subtile */
+.ov-title::before{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:40px;
+  height:1px;
+  background:#c9a96e;
+}
 
 </style>
 
@@ -280,8 +327,6 @@ portés comme un rituel plutôt qu’un simple bijou.
 
     <img src="{% static 'images/IMG_2732.JPG' %}" alt="">
     <img src="{% static 'images/IMG_2356.JPG' %}" alt="">
-    <img src="{% static 'images/IMG_0689.JPG' %}" alt="">
-    <img src="{% static 'images/IMG_0306.JPG' %}" alt="">
 
   </div>
 
@@ -354,7 +399,7 @@ Il n'existe pas de retour. Le bijou est vente finale.
 <!-- OR MASSIF -->
 <div class="ov-material">
 <div class="ov-img">
-<img src="{% static 'images/IMG_2732.JPG' %}">
+<img src="{% static 'images/IMG_4143.jpeg' %}">
 </div>
 <div>
 <h3>OR MASSIF</h3>
@@ -385,7 +430,7 @@ Hypoallergénique, idéal pour les peaux sensibles.
 </a>
 </div>
 <div class="ov-img">
-<img src="{% static 'images/IMG_2423.JPG' %}">
+<img src="{% static 'images/IMG_4139.jpeg' %}">
 </div>
 
 
@@ -394,7 +439,7 @@ Hypoallergénique, idéal pour les peaux sensibles.
 <!-- ARGENT -->
 <div class="ov-material">
 <div class="ov-img">
-<img src="{% static 'images/IMG_2785.JPG' %}">
+<img src="{% static 'images/IMG_4155.jpeg' %}">
 </div>
 <div>
 <h3>ARGENT 925</h3>

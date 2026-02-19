@@ -185,6 +185,19 @@
     height:420px;
   }
 }
+/* FORCE IMAGE FIRST ON MOBILE */
+@media(max-width:900px){
+
+  .ov-grid > .ov-media{
+    order:1;
+  }
+
+  .ov-grid > div:not(.ov-media){
+    order:2;
+  }
+
+}
+
 </style>
 
 <div class="ov-services">

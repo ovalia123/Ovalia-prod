@@ -1,4 +1,4 @@
-#!/home/mohamed/Downloads/Ovalia-prod-main/venv/bin/python3
+#!/home/mohamed/Ovalia-prod/venv/bin/python3
 
 import sys
 import json

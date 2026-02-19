@@ -251,7 +251,16 @@
           <option value="plaqué or">Plaqué or</option>
         </select>
 
-        <input type="number" id="priceFilter" placeholder="Prix max ($)">
+        <select id="categoryFilter">
+          <option value="">Toutes les catégories</option>
+          <option value="Collier">Collier</option>
+          <option value="Chaînes">Chaînes</option>
+          <option value="Bijoux de mains">Bijoux de mains</option>
+          <option value="Bracelet">Bracelet</option>
+          <option value="Accessoires">Accessoires</option>
+          <option value="Boucle doreille">Boucle doreille</option>
+        </select>
+
       </div>
 
       <!-- PRODUCTS GRID -->
@@ -260,9 +269,10 @@
 
         {% for sale in sales %}
         <div class="product-card"
-             data-name="{{ sale.name|lower }}"
-             data-material="{{ sale.materiaux|lower }}"
-             data-price="{{ sale.price }}">
+          data-name="{{ sale.name|lower }}"
+          data-material="{{ sale.materiaux|lower }}"
+          data-category="{{ sale.category|lower }}">
+
 
           <div class="shop-card">
             {% if sale.image %}
@@ -301,14 +311,15 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
   const searchInput = document.getElementById("searchInput");
   const materialFilter = document.getElementById("materialFilter");
-  const priceFilter = document.getElementById("priceFilter");
+  const categoryFilter = document.getElementById("categoryFilter");
   const products = document.querySelectorAll(".product-card");
 
-  // Normalize to avoid accents/case issues (plaqué vs plaque, etc.)
-  function norm(s){
-    return (s || "")
+  // Normalize (handles accents, uppercase, spaces)
+  function normalize(str) {
+    return (str || "")
       .toString()
       .trim()
       .toLowerCase()
@@ -316,41 +327,45 @@ document.addEventListener("DOMContentLoaded", function () {
       .replace(/[\u0300-\u036f]/g, "");
   }
 
-  function filterProducts(){
-    const q = norm(searchInput.value);
-    const mat = norm(materialFilter.value);
-    const maxPrice = priceFilter.value ? parseFloat(priceFilter.value) : null;
+  function filterProducts() {
+    const searchValue = normalize(searchInput.value);
+    const selectedMaterial = normalize(materialFilter.value);
+    const selectedCategory = normalize(categoryFilter.value);
 
-    products.forEach(p => {
-      const name = norm(p.dataset.name);
-      const material = norm(p.dataset.material);
-      const price = parseFloat(p.dataset.price);
+    products.forEach(product => {
 
-      let ok = true;
+      const name = normalize(product.dataset.name);
+      const material = normalize(product.dataset.material);
+      const category = normalize(product.dataset.category);
 
-      if (q && !name.includes(q)) ok = false;
-      if (mat && material !== mat) ok = false;
-      if (maxPrice !== null && price > maxPrice) ok = false;
+      let visible = true;
 
-      p.style.display = ok ? "" : "none";
+      // Search filter
+      if (searchValue && !name.includes(searchValue)) {
+        visible = false;
+      }
+
+      // Material filter
+      if (selectedMaterial && material !== selectedMaterial) {
+        visible = false;
+      }
+
+      // Category filter
+      if (selectedCategory && category !== selectedCategory) {
+        visible = false;
+      }
+
+      product.style.display = visible ? "" : "none";
     });
   }
 
+  // Event listeners
   searchInput.addEventListener("input", filterProducts);
   materialFilter.addEventListener("change", filterProducts);
-  priceFilter.addEventListener("input", filterProducts);
+  categoryFilter.addEventListener("change", filterProducts);
 
-  // Optional: add-to-cart feedback without breaking layout
-  document.querySelectorAll(".shop-actions form").forEach(form => {
-    form.addEventListener("submit", function(e){
-      e.preventDefault();
-      const btn = form.querySelector("button");
-      btn.disabled = true;
-      btn.textContent = "Ajouté ✓";
-      setTimeout(() => form.submit(), 80);
-    });
-  });
 });
 </script>
+
 
 {% endblock %}
