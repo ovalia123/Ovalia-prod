@@ -22,8 +22,9 @@ urlpatterns = [
     path('experience/', views.shop, name='shop'),
     path('orMassif/', views.shop_massif, name='or'),
     path('argent/', views.shop_argent, name='argent'),
+    path('charms/', views.shop_charms, name='charms'),
+
     path('orRempli/', views.shop_rempli, name='orrempli'),
-    path('shop/charms', views.charms, name='charms'),
     path('shop/tennis', views.tennis, name='tennis'),
     # boutique & ecommerce
     path('boutique/', views.boutique, name='boutique'),

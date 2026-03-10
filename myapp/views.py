@@ -20,7 +20,7 @@ from django.conf import settings
 import stripe
 from django.template.loader import render_to_string
 from pathlib import Path
-
+from django.core.paginator import Paginator
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -102,8 +102,9 @@ def tennis(request):
     products = Product.objects.filter(available=True, materiaux='Tennis')
     return render(request, 'user/shop/tennis.html', {'products': products})
 
-def charms(request):
-    return render(request, 'user/shop/charms.html')
+def shop_charms(request):
+    products = Product.objects.filter(available=True, materiaux='Charms')
+    return render(request, 'user/shop/charms.html', {'products': products})
 
 
 def boutique(request):
@@ -120,8 +121,13 @@ def boutique(request):
 
     sales = sales.order_by("-created")
 
+    paginator = Paginator(sales, 12)  # 12 products per page
+    page_number = request.GET.get("page")
+    sales_page = paginator.get_page(page_number)
+    print(sales_page)
+
     context = {
-        "sales": sales,
+        "sales": sales_page,
         "current_category": category,
         "current_material": material,
     }

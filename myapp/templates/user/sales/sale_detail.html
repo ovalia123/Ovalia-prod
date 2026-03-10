@@ -4,8 +4,6 @@
 
 <style>
 
-/* ===== GLOBAL ===== */
-
 .ov-detail{
   font-family:"Playfair Display", serif;
   background:#fff;
@@ -18,14 +16,13 @@
   padding:90px 30px;
 }
 
-/* ===== GRID LAYOUT ===== */
-
 .detail-grid{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:60px;
   align-items:center;
 }
+
 .detail-title,
 .detail-desc,
 .detail-meta,
@@ -35,9 +32,11 @@
   word-break:break-word;
   max-width:100%;
 }
-/* ===== IMAGE (FIXED SIZE ALWAYS) ===== */
+
+/* IMAGE */
 
 .detail-image{
+  position:relative;
   width:100%;
   max-width:520px;
   height:520px;
@@ -56,7 +55,28 @@
   object-fit:cover;
 }
 
-/* ===== TEXT ===== */
+.detail-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  font-size:42px;
+  color:#fff;
+  cursor:pointer;
+  padding:0 14px;
+  opacity:0;
+  transition:opacity .2s;
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+  line-height:1;
+  z-index:2;
+}
+
+.detail-image:hover .detail-arrow{ opacity:1; }
+.detail-prev{ left:4px; }
+.detail-next{ right:4px; }
+
+/* TEXT */
 
 .detail-category{
   text-transform:uppercase;
@@ -88,8 +108,6 @@
   font-size:15px;
 }
 
-/* ===== BUTTON ===== */
-
 .detail-actions{
   display:flex;
   justify-content:flex-start;
@@ -111,21 +129,15 @@
   color:white;
 }
 
-
-/* ===== MOBILE ===== */
-
 @media(max-width:900px){
-
-.detail-grid{
-  grid-template-columns:1fr;
-  gap:40px;
-}
-
-.detail-image{
-  margin:auto;
-  height:420px;
-}
-
+  .detail-grid{
+    grid-template-columns:1fr;
+    gap:40px;
+  }
+  .detail-image{
+    margin:auto;
+    height:420px;
+  }
 }
 
 </style>
@@ -133,53 +145,61 @@
 
 <div class="ov-detail">
 <div class="ov-wrap">
-
 <div class="detail-grid">
 
 <!-- IMAGE -->
 <div class="detail-image">
-  {% if sale.image %}
-    <img src="{{ sale.image.url }}" alt="{{ sale.name }}">
-  {% else %}
-    <img src="{% static 'images/product-1.png' %}" alt="{{ sale.name }}">
-  {% endif %}
+  <button class="detail-arrow detail-prev" type="button">&#8249;</button>
+  <img id="detailImg"
+       src="{% with sale.images.first as first %}{% if first %}{{ first.image.url }}{% elif sale.image %}{{ sale.image.url }}{% else %}{% static 'images/product-1.png' %}{% endif %}{% endwith %}"
+       alt="{{ sale.name }}">
+  <button class="detail-arrow detail-next" type="button">&#8250;</button>
 </div>
-
 
 <!-- INFO -->
 <div>
+  <p class="detail-category">{{ sale.get_category_display|default:sale.category }}</p>
+  <h1 class="detail-title">{{ sale.name }}</h1>
+  <p class="detail-desc">{{ sale.description|default:"Création originale réalisée dans notre atelier Ovalia." }}</p>
 
-<p class="detail-category">
-{{ sale.get_category_display|default:sale.category }}
-</p>
+  <div class="detail-meta">
+    <div><strong>Numéro :</strong> {{ sale.numero }}</div>
+    <div><strong>Matériau :</strong> {{ sale.materiaux }}</div>
+    <div><strong>Prix :</strong> ${{ sale.price }}</div>
+  </div>
 
-<h1 class="detail-title">{{ sale.name }}</h1>
-
-<p class="detail-desc">
-{{ sale.description|default:"Création originale réalisée dans notre atelier Ovalia." }}
-</p>
-
-<div class="detail-meta">
-<div><strong>Numéro :</strong> {{ sale.numero }}</div>
-<div><strong>Matériau :</strong> {{ sale.materiaux }}</div>
-<div><strong>Prix :</strong> ${{ sale.price }}</div>
-</div>
-
-<form method="post" action="{% url 'add_to_cart' sale.id %}">
-{% csrf_token %}
-
-<div class="detail-actions">
-<button type="submit">
-Ajouter au panier
-</button>
-</div>
-
-</form>
-
+  <form method="post" action="{% url 'add_to_cart' sale.id %}">
+    {% csrf_token %}
+    <div class="detail-actions">
+      <button type="submit">Ajouter au panier</button>
+    </div>
+  </form>
 </div>
 
 </div>
 </div>
 </div>
+
+
+<script>
+(function(){
+  const images = [{% for img in sale.images.all %}'{{ img.image.url }}'{% if not forloop.last %},{% endif %}{% empty %}'{% if sale.image %}{{ sale.image.url }}{% else %}{% static 'images/product-1.png' %}{% endif %}'{% endfor %}];
+
+  if (images.length <= 1) return;
+
+  let current = 0;
+  const img   = document.getElementById("detailImg");
+
+  document.querySelector(".detail-prev").addEventListener("click", () => {
+    current = (current - 1 + images.length) % images.length;
+    img.src = images[current];
+  });
+
+  document.querySelector(".detail-next").addEventListener("click", () => {
+    current = (current + 1) % images.length;
+    img.src = images[current];
+  });
+})();
+</script>
 
 {% endblock %}

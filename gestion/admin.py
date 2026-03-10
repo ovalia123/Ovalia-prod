@@ -12,3 +12,7 @@ admin.site.register(Sales)
 admin.site.register(Order)
 
 admin.site.register(OrderItem)
+
+admin.site.register(ProductImage)
+
+admin.site.register(SaleImage)

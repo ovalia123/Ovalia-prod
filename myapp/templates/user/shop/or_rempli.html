@@ -137,6 +137,49 @@
   cursor:pointer;
 }
 
+/* GALLERY */
+
+.modal-gallery{
+  position:relative;
+  margin-bottom:16px;
+}
+
+.modal-gallery img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.gallery-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  font-size:42px;
+  color:#fff;
+  cursor:pointer;
+  padding:0 14px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+  transition:opacity .2s;
+  line-height:1;
+}
+
+.gallery-arrow:hover{ opacity:.7; }
+.gallery-prev{ left:4px; }
+.gallery-next{ right:4px; }
+
+.gallery-counter{
+  font-size:.8rem;
+  color:#7a6f65;
+  margin-bottom:12px;
+  display:none;
+}
+
 /* RESPONSIVE */
 
 @media(max-width:900px){
@@ -181,9 +224,9 @@ placeholder="Rechercher un bijou...">
      data-name="{{ product.name }}"
      data-numero="{{ product.numero }}"
      data-description="{{ product.description }}"
-     data-image="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}">
+     data-images="[{% for img in product.images.all %}'{{ img.image.url }}'{% if not forloop.last %},{% endif %}{% empty %}'{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}'{% endfor %}]">
 
-<img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}"
+<img src="{% with product.images.first as first %}{% if first %}{{ first.image.url }}{% elif product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}{% endwith %}"
      class="product-img">
 
 <div class="product-overlay">
@@ -216,7 +259,17 @@ placeholder="Rechercher un bijou...">
 <div id="productModal" class="product-modal">
   <div class="modal-content">
     <span class="modal-close">&times;</span>
-    <img id="modalImg">
+
+    <div class="modal-gallery">
+      <button class="gallery-arrow gallery-prev">&#8249;</button>
+      <img id="modalImg">
+      <button class="gallery-arrow gallery-next">&#8250;</button>
+    </div>
+
+    <div class="gallery-counter">
+      <span id="galleryIndex">1</span> / <span id="galleryTotal">1</span>
+    </div>
+
     <h2 id="modalTitle"></h2>
     <p id="modalDesc"></p>
   </div>
@@ -225,45 +278,75 @@ placeholder="Rechercher un bijou...">
 
 <script>
 
-/* SEARCH */
+document.addEventListener("DOMContentLoaded", function () {
 
-document.addEventListener("DOMContentLoaded",function(){
+  /* SEARCH */
+  const searchInput = document.getElementById("searchInput");
+  const products = document.querySelectorAll(".product-card");
 
-const searchInput=document.getElementById("searchInput");
-const products=document.querySelectorAll(".product-card");
+  searchInput.addEventListener("input", function () {
+    const val = this.value.toLowerCase();
+    products.forEach(p => {
+      p.style.display = p.dataset.name.toLowerCase().includes(val) ? "" : "none";
+    });
+  });
 
-searchInput.addEventListener("input",function(){
-const val=this.value.toLowerCase();
+  /* GALLERY STATE */
+  let currentImages = [];
+  let currentIndex  = 0;
 
-products.forEach(p=>{
-p.style.display=p.dataset.name.toLowerCase().includes(val)?"":"none";
-});
-});
+  const modal    = document.getElementById("productModal");
+  const modalImg = document.getElementById("modalImg");
+  const prevBtn  = document.querySelector(".gallery-prev");
+  const nextBtn  = document.querySelector(".gallery-next");
+  const indexEl  = document.getElementById("galleryIndex");
+  const totalEl  = document.getElementById("galleryTotal");
+  const counter  = document.querySelector(".gallery-counter");
 
-/* CLICKABLE CARD MODAL */
+  function showImage(index) {
+    currentIndex = (index + currentImages.length) % currentImages.length;
+    modalImg.src = currentImages[currentIndex];
+    indexEl.textContent = currentIndex + 1;
+  }
 
-products.forEach(card=>{
-card.addEventListener("click",()=>{
+  /* OPEN MODAL */
+  products.forEach(card => {
+    card.addEventListener("click", () => {
+      currentImages = JSON.parse(card.dataset.images.replace(/'/g, '"'));
+      currentIndex  = 0;
 
-document.getElementById("modalImg").src=card.dataset.image;
-document.getElementById("modalTitle").innerText=
-card.dataset.name+" | "+card.dataset.numero;
-document.getElementById("modalDesc").innerText=
-card.dataset.description;
+      const hasMultiple = currentImages.length > 1;
+      prevBtn.style.display   = hasMultiple ? "flex" : "none";
+      nextBtn.style.display   = hasMultiple ? "flex" : "none";
+      counter.style.display   = hasMultiple ? "block" : "none";
 
-document.getElementById("productModal").style.display="flex";
+      totalEl.textContent = currentImages.length;
+      showImage(0);
 
-});
-});
+      document.getElementById("modalTitle").innerText =
+        card.dataset.name + " | " + card.dataset.numero;
+      document.getElementById("modalDesc").innerText =
+        card.dataset.description;
 
-document.querySelector(".modal-close").onclick=()=>{
-document.getElementById("productModal").style.display="none";
-};
+      modal.style.display = "flex";
+    });
+  });
 
-document.getElementById("productModal").onclick=e=>{
-if(e.target.id==="productModal")
-e.target.style.display="none";
-};
+  /* ARROWS */
+  prevBtn.addEventListener("click", e => { e.stopPropagation(); showImage(currentIndex - 1); });
+  nextBtn.addEventListener("click", e => { e.stopPropagation(); showImage(currentIndex + 1); });
+
+  /* CLOSE */
+  document.querySelector(".modal-close").onclick = () => modal.style.display = "none";
+  modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+
+  /* KEYBOARD */
+  document.addEventListener("keydown", e => {
+    if (modal.style.display !== "flex") return;
+    if (e.key === "ArrowLeft")  showImage(currentIndex - 1);
+    if (e.key === "ArrowRight") showImage(currentIndex + 1);
+    if (e.key === "Escape")     modal.style.display = "none";
+  });
 
 });
 

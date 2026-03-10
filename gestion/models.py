@@ -22,6 +22,7 @@ class Product(models.Model):
         ('Or massif', 'Or massif'),
         ('Or rempli', 'Or rempli'),
         ('Argent sterling', 'Argent sterling'),
+        ('Charms', 'Charms'),
     ]
     materiaux = models.CharField(choices=materiaux_choices, max_length=50, default='Non defini')
     numero = models.IntegerField(null=True)
@@ -88,3 +89,27 @@ class OrderItem(models.Model):
     sale = models.ForeignKey("Sales", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=100, decimal_places=2)
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/')
+    order = models.PositiveIntegerField(default=0)  # optional: control display order
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Image for {self.product.name}"
+
+
+class SaleImage(models.Model):
+    sale = models.ForeignKey(Sales, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='sales/')
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"Image for {self.sale.name}"

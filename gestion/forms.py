@@ -13,7 +13,7 @@ class LoginForm(AuthenticationForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'image', 'description' , 'poignee', 'cheville', 'available', 'materiaux', 'numero']
+        fields = ['name', 'description' , 'poignee', 'cheville', 'available', 'materiaux', 'numero']
 
 
 class SalesForm(forms.ModelForm):
@@ -26,7 +26,6 @@ class SalesForm(forms.ModelForm):
             "category",
             "materiaux",
             "price",
-            "image",
             "available",
         ]
 
@@ -54,9 +53,6 @@ class SalesForm(forms.ModelForm):
                 "class": "form-control",
                 "step": "0.01",
                 "placeholder": "0.00",
-            }),
-            "image": forms.ClearableFileInput(attrs={
-                "class": "form-control",
             }),
             "available": forms.CheckboxInput(attrs={
                 "class": "form-check-input",

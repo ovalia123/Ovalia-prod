@@ -1,60 +1,355 @@
 {% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
+{% block content %}
 
-<html lang="fr">
+<style>
 
-{% block content %}	
-<body>
-  <!-- Start Header/Navigation -->
-  <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
-		<div class="container">
-		<a class="navbar-brand" href={% url 'index' %}><img class="logo" src={% static 'images/big_logo_black.png' %} alt="Ovalia Atelier"></a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarsFurni">
-			<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-				<li>
-					<a class="nav-link" href= {% url 'index' %}>Accueil</a>
-				</li>
-				</li>
-				<a class="nav-link" style="text-color:black;" href="{% url 'boutique' %}">Boutique</a>
-				</li>
-				<li class="nav-item active"><a class="nav-link" href={% url 'shop' %}>Bracelet</a></li>
-				
-				<li><a class="nav-link" href={% url 'event' %}>Evenement</a></li>
-				<li ><a class="nav-link" href={% url 'faq' %}>FAQ</a></li>
-				<li><a class="nav-link" href={% url 'contact' %}>Contact</a></li>
-				<li><a class="nav-link" href="{% url 'cart' %}"><img src={% static 'images/cart.svg' %}></a></li>
-			</ul>
-		</div>
-		</div>
-	</nav>
-    <!-- Start Charms Collection Section -->
-    <section class="py-5" style="background-color:#c0a893;">
-    <div class="container text-center">
-        <img 
-        src="{% static 'images/charms.jpeg' %}" 
-        alt="Charms Ovalia"
-        class="img-fluid"
-        style="max-width: 650px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"
-        >
+/* ===== GLOBAL ===== */
+
+.ov-section{
+  font-family:"Playfair Display", serif;
+  background:#fff;
+  color:#2b2b2b;
+}
+
+.ov-wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:0 30px;
+  margin-bottom:100px;
+}
+
+/* HERO */
+
+.ov-hero{
+  padding:90px 0 60px;
+  text-align:center;
+}
+
+.ov-hero h1{
+  font-size:40px;
+  letter-spacing:1px;
+  margin-bottom:10px;
+}
+
+.ov-hero p{
+  color:#7a6f65;
+  max-width:600px;
+  margin:auto;
+}
+
+/* SEARCH */
+
+.search-bar{
+  max-width:500px;
+  margin:40px auto 70px;
+}
+
+.search-bar input{
+  width:100%;
+  padding:14px 22px;
+  border-radius:30px;
+  border:1px solid #d7c5b3;
+}
+
+/* GRID */
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:28px;
+}
+
+/* CARD */
+
+.product-card{
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 18px 35px rgba(0,0,0,.08);
+  transition:.3s;
+  cursor:pointer;
+}
+
+.product-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 28px 45px rgba(0,0,0,.12);
+}
+
+/* IMAGE */
+
+.product-img{
+  width:100%;
+  height:320px;
+  object-fit:cover;
+}
+
+/* TEXT */
+
+.product-overlay{
+  padding:22px;
+  text-align:left;
+}
+
+.product-material{
+  font-size:.75rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#7a6f65;
+  margin-bottom:6px;
+}
+
+/* MODAL */
+
+.product-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.modal-content{
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  max-width:700px;
+  width:90%;
+  text-align:center;
+  position:relative;
+}
+
+.modal-content img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+.modal-close{
+  position:absolute;
+  top:10px;
+  right:20px;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* GALLERY */
+
+.modal-gallery{
+  position:relative;
+  margin-bottom:16px;
+}
+
+.modal-gallery img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.gallery-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  font-size:42px;
+  color:#fff;
+  cursor:pointer;
+  padding:0 14px;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-shadow:0 1px 6px rgba(0,0,0,.5);
+  transition:opacity .2s;
+  line-height:1;
+}
+
+.gallery-arrow:hover{ opacity:.7; }
+.gallery-prev{ left:4px; }
+.gallery-next{ right:4px; }
+
+.gallery-counter{
+  font-size:.8rem;
+  color:#7a6f65;
+  margin-bottom:12px;
+  display:none;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+  .products-grid{ grid-template-columns:repeat(2,1fr); }
+}
+
+@media(max-width:600px){
+  .products-grid{ grid-template-columns:1fr; }
+}
+
+</style>
+
+
+<section class="ov-section">
+<div class="ov-wrap">
+
+<!-- HERO -->
+
+<div class="ov-hero">
+<h1>Charms</h1>
+<p>
+Découvrez nos créations en Charms :
+des bijoux élégants et intemporels.
+</p>
+</div>
+
+<!-- SEARCH -->
+
+<div class="search-bar">
+<input type="text" id="searchInput"
+placeholder="Rechercher un bijou...">
+</div>
+
+<!-- GRID -->
+
+<div class="products-grid">
+
+{% for product in products %}
+{% if product.available %}
+
+<div class="product-card"
+     data-name="{{ product.name }}"
+     data-numero="{{ product.numero }}"
+     data-description="{{ product.description }}"
+     data-images="[{% for img in product.images.all %}'{{ img.image.url }}'{% if not forloop.last %},{% endif %}{% empty %}'{% if product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}'{% endfor %}]">
+
+<img src="{% with product.images.first as first %}{% if first %}{{ first.image.url }}{% elif product.image %}{{ product.image.url }}{% else %}{% static 'images/product-placeholder.jpg' %}{% endif %}{% endwith %}"
+     class="product-img">
+
+<div class="product-overlay">
+
+<p class="product-material">
+{{ product.materiaux }}
+</p>
+
+<h3>
+{{ product.name }} | {{ product.numero }}
+</h3>
+
+<p>Bracelet — {{ product.poignee }} $</p>
+<p>Cheville — {{ product.cheville }} $</p>
+<p>Cou — Sur soumission</p>
+
+</div>
+</div>
+
+{% endif %}
+{% endfor %}
+
+</div>
+</div>
+</section>
+
+
+<!-- MODAL -->
+
+<div id="productModal" class="product-modal">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+
+    <div class="modal-gallery">
+      <button class="gallery-arrow gallery-prev">&#8249;</button>
+      <img id="modalImg">
+      <button class="gallery-arrow gallery-next">&#8250;</button>
     </div>
-    </section>
-<!-- End Charms Collection Section -->
 
-  <!-- End Header/Navigation -->
+    <div class="gallery-counter">
+      <span id="galleryIndex">1</span> / <span id="galleryTotal">1</span>
+    </div>
 
-  <!-- Start Hero Section -->
-  
-  <!-- End Hero Section -->
+    <h2 id="modalTitle"></h2>
+    <p id="modalDesc"></p>
+  </div>
+</div>
 
 
+<script>
 
-  <!-- Start Workshop Promo Section -->
-  <!-- End Workshop Promo Section -->
+document.addEventListener("DOMContentLoaded", function () {
 
- 
-      
+  /* SEARCH */
+  const searchInput = document.getElementById("searchInput");
+  const products = document.querySelectorAll(".product-card");
+
+  searchInput.addEventListener("input", function () {
+    const val = this.value.toLowerCase();
+    products.forEach(p => {
+      p.style.display = p.dataset.name.toLowerCase().includes(val) ? "" : "none";
+    });
+  });
+
+  /* GALLERY STATE */
+  let currentImages = [];
+  let currentIndex  = 0;
+
+  const modal    = document.getElementById("productModal");
+  const modalImg = document.getElementById("modalImg");
+  const prevBtn  = document.querySelector(".gallery-prev");
+  const nextBtn  = document.querySelector(".gallery-next");
+  const indexEl  = document.getElementById("galleryIndex");
+  const totalEl  = document.getElementById("galleryTotal");
+  const counter  = document.querySelector(".gallery-counter");
+
+  function showImage(index) {
+    currentIndex = (index + currentImages.length) % currentImages.length;
+    modalImg.src = currentImages[currentIndex];
+    indexEl.textContent = currentIndex + 1;
+  }
+
+  /* OPEN MODAL */
+  products.forEach(card => {
+    card.addEventListener("click", () => {
+      currentImages = JSON.parse(card.dataset.images.replace(/'/g, '"'));
+      currentIndex  = 0;
+
+      const hasMultiple = currentImages.length > 1;
+      prevBtn.style.display   = hasMultiple ? "flex" : "none";
+      nextBtn.style.display   = hasMultiple ? "flex" : "none";
+      counter.style.display   = hasMultiple ? "block" : "none";
+
+      totalEl.textContent = currentImages.length;
+      showImage(0);
+
+      document.getElementById("modalTitle").innerText =
+        card.dataset.name + " | " + card.dataset.numero;
+      document.getElementById("modalDesc").innerText =
+        card.dataset.description;
+
+      modal.style.display = "flex";
+    });
+  });
+
+  /* ARROWS */
+  prevBtn.addEventListener("click", e => { e.stopPropagation(); showImage(currentIndex - 1); });
+  nextBtn.addEventListener("click", e => { e.stopPropagation(); showImage(currentIndex + 1); });
+
+  /* CLOSE */
+  document.querySelector(".modal-close").onclick = () => modal.style.display = "none";
+  modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+
+  /* KEYBOARD */
+  document.addEventListener("keydown", e => {
+    if (modal.style.display !== "flex") return;
+    if (e.key === "ArrowLeft")  showImage(currentIndex - 1);
+    if (e.key === "ArrowRight") showImage(currentIndex + 1);
+    if (e.key === "Escape")     modal.style.display = "none";
+  });
+
+});
+
+</script>
+
 {% endblock %}

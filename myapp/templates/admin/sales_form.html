@@ -2,71 +2,214 @@
 {% load static %}
 {% block content %}
 
+<style>
+  .image-upload-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+    max-width: 600px;  /* 👈 constrains the whole grid */
+    }
+
+    .image-slot {
+    position: relative;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    aspect-ratio: 1;
+    max-height: 160px;  /* 👈 caps each slot height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    background: #f9fafb;
+    transition: border-color .2s;
+    }
+
+  .image-slot:hover { border-color: #6b7280; }
+
+  .image-slot input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .image-slot .slot-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: #9ca3af;
+    pointer-events: none;
+  }
+
+  .image-slot .slot-placeholder svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .image-slot .slot-placeholder span { font-size: .8rem; }
+
+  .image-slot .preview-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: none;
+  }
+
+  .image-slot .remove-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    line-height: 1;
+  }
+
+  .image-slot.has-image { border-style: solid; border-color: #d1d5db; }
+  .image-slot.has-image .slot-placeholder { display: none; }
+  .image-slot.has-image .preview-img      { display: block; }
+  .image-slot.has-image .remove-btn       { display: flex; }
+
+  .formset-hidden { display: none; }
+</style>
+
 <div class="container-fluid">
 
-    <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
 
-    <div class="card shadow mb-4">
-        <div class="card-body">
+  <div class="card shadow mb-4">
+    <div class="card-body">
 
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label>Nom</label>
-                        {{ form.name }}
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label>Numéro</label>
-                        {{ form.numero }}
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label>Description</label>
-                    {{ form.description }}
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label>Catégorie</label>
-                        {{ form.category }}
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label>Matériau</label>
-                        {{ form.materiaux }}
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label>Prix ($)</label>
-                        {{ form.price }}
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label>Image</label>
-                    {{ form.image }}
-                </div>
-
-                <div class="form-check mb-3">
-                    {{ form.available }}
-                    <label class="form-check-label">Disponible</label>
-                </div>
-
-                <button type="submit" class="btn btn-success">
-                    Enregistrer
-                </button>
-
-                <a href="{% url 'sales_list' %}" class="btn btn-secondary">
-                    Annuler
-                </a>
-            </form>
-
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>Nom</label>
+            {{ form.name }}
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>Numéro</label>
+            {{ form.numero }}
+          </div>
         </div>
-    </div>
 
+        <div class="mb-3">
+          <label>Description</label>
+          {{ form.description }}
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label>Catégorie</label>
+            {{ form.category }}
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>Matériau</label>
+            {{ form.materiaux }}
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>Prix ($)</label>
+            {{ form.price }}
+          </div>
+        </div>
+
+        <div class="form-check mb-3">
+          {{ form.available }}
+          <label class="form-check-label">Disponible</label>
+        </div>
+
+        <!-- FORMSET HIDDEN MANAGEMENT -->
+        {{ formset.management_form }}
+        {% for f in formset %}
+          <div class="formset-hidden">
+            {{ f.id }}
+            {{ f.DELETE }}
+            {{ f.order }}
+          </div>
+        {% endfor %}
+
+        <!-- IMAGE GRID -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Photos du produit</label>
+          <p class="text-muted small mb-2">Cliquez sur un cadre pour ajouter une photo. La première est l'image principale.</p>
+
+          <div class="image-upload-grid">
+            {% for f in formset %}
+            <div class="image-slot" id="slot-{{ forloop.counter0 }}">
+              {{ f.image }}
+              <img class="preview-img" id="preview-{{ forloop.counter0 }}" src="" alt="">
+              <button type="button" class="remove-btn" data-slot="{{ forloop.counter0 }}">&#x2715;</button>
+              <div class="slot-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/>
+                </svg>
+                {% if forloop.first %}
+                  <span>Image principale</span>
+                {% else %}
+                  <span>Photo {{ forloop.counter }}</span>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        <a href="{% url 'sales_list' %}" class="btn btn-secondary">Annuler</a>
+
+      </form>
+    </div>
+  </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".image-slot").forEach((slot, index) => {
+    const input     = slot.querySelector("input[type='file']");
+    const preview   = slot.querySelector(".preview-img");
+    const removeBtn = slot.querySelector(".remove-btn");
+
+    input.addEventListener("change", function () {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          preview.src = e.target.result;
+          slot.classList.add("has-image");
+        };
+        reader.readAsDataURL(this.files[0]);
+      }
+    });
+
+    removeBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      input.value = "";
+      preview.src = "";
+      slot.classList.remove("has-image");
+
+      const deleteCheckbox = slot.closest("form")
+        .querySelector(`#id_images-${index}-DELETE`);
+      if (deleteCheckbox) deleteCheckbox.checked = true;
+    });
+  });
+});
+</script>
+
 {% endblock %}

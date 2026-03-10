@@ -3,7 +3,7 @@
 {% block content %}
 
 <style>
-/* ===== GLOBAL ===== */
+
 .ov-boutique{
   background:#fff;
   color:#2b2b2b;
@@ -16,12 +16,10 @@
   padding:0 30px;
 }
 
-/* ===== SECTION ===== */
 .shop-section{
   padding:90px 0;
 }
 
-/* ===== HEADER ===== */
 .shop-header{
   display:grid;
   grid-template-columns: 1fr auto;
@@ -42,7 +40,6 @@
   color:#7a6f65;
 }
 
-/* panier button (keep bootstrap if you want) */
 .shop-cart-btn{
   border:2px solid #000;
   padding:10px 18px;
@@ -52,19 +49,18 @@
   transition:.25s;
   font-size:14px;
 }
+
 .shop-cart-btn:hover{
   background:#000;
   color:#fff;
 }
 
-/* ===== FILTER BAR (GRID) ===== */
 .filter-bar{
   background:#fff;
   border-radius:18px;
   box-shadow:0 12px 30px rgba(0,0,0,.05);
   padding:18px;
   margin-bottom:44px;
-
   display:grid;
   grid-template-columns: 1.4fr 1fr .8fr;
   gap:14px;
@@ -81,14 +77,12 @@
   background:#fff;
 }
 
-/* ===== PRODUCTS GRID ===== */
 .products-grid{
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap:26px;
 }
 
-/* ===== CARD ===== */
 .shop-card{
   background:#fff;
   border-radius:18px;
@@ -104,18 +98,46 @@
   box-shadow:0 28px 45px rgba(0,0,0,.12);
 }
 
-.shop-card img{
+/* CARD IMAGE WRAPPER */
+
+.card-img-wrapper{
+  position:relative;
+  overflow:hidden;
+}
+
+.card-img-wrapper img{
   width:100%;
   height:320px;
   object-fit:cover;
+  display:block;
 }
 
+.card-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:32px;
+  cursor:pointer;
+  padding:0 12px;
+  opacity:0;
+  transition:opacity .2s;
+  text-shadow:0 1px 6px rgba(0,0,0,.6);
+  line-height:1;
+}
+
+.card-img-wrapper:hover .card-arrow{ opacity:1; }
+.card-prev{ left:4px; }
+.card-next{ right:4px; }
+.card-img-wrapper[data-single="true"] .card-arrow{ display:none; }
+
 .shop-card-body{
-  padding:22px 22px 18px;
+  padding:22px;
   display:flex;
   flex-direction:column;
   gap:8px;
-  flex:1;
 }
 
 .shop-category{
@@ -123,13 +145,11 @@
   text-transform:uppercase;
   letter-spacing:1px;
   color:#7a6f65;
-  margin:0;
 }
 
 .shop-card-body h5{
   margin:0;
   font-size:1.05rem;
-  letter-spacing:.3px;
 }
 
 .shop-price{
@@ -137,12 +157,11 @@
   font-weight:500;
 }
 
-/* ===== ACTIONS (BUTTONS CENTERED, SAME SIZE) ===== */
 .shop-actions{
   margin-top:auto;
   padding:0 22px 22px;
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns:1fr 1fr;
   gap:12px;
 }
 
@@ -154,27 +173,21 @@
   justify-content:center;
   font-family:"Playfair Display", serif;
   font-size:14px;
-  letter-spacing:.5px;
-  border-radius:0;
-  width:100%;
-}
-
-/* DETAILS BLACK */
-.shop-actions a{
-  text-decoration:none;
-  background:#000;
-  color:#fff;
   border:2px solid #000;
 }
 
-/* ADD WHITE */
+.shop-actions a{
+  background:#000;
+  color:#fff;
+  text-decoration:none;
+}
+
 .shop-actions button{
   background:#fff;
   color:#000;
-  border:2px solid #000;
+  width: 100%;
 }
 
-/* HOVER */
 .shop-actions a:hover{
   background:#fff;
   color:#000;
@@ -185,187 +198,188 @@
   color:#fff;
 }
 
-/* remove bootstrap button defaults */
-.shop-actions button{
-  outline:none;
-  box-shadow:none;
+.shop-pagination{
+  margin-top:50px;
+  display:flex;
+  justify-content:center;
+  gap:8px;
 }
 
-/* ===== EMPTY ===== */
-.empty-state{
-  text-align:center;
-  padding:60px 0;
-  color:#7a6f65;
-  font-size:18px;
+.shop-pagination a{
+  border:1px solid #000;
+  padding:8px 14px;
+  text-decoration:none;
+  color:#000;
 }
 
-/* ===== RESPONSIVE ===== */
+.shop-pagination a.active{
+  background:#000;
+  color:#fff;
+}
+
 @media(max-width:1024px){
-  .products-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .products-grid{ grid-template-columns:repeat(2,1fr); }
 }
 
 @media(max-width:768px){
-  .shop-section{ padding:70px 0; }
-  .ov-wrap{ padding:0 18px; }
-
-  .shop-header{
-    grid-template-columns:1fr;
-    justify-items:start;
-  }
-
-  .filter-bar{
-    grid-template-columns:1fr;
-  }
-
+  .filter-bar{ grid-template-columns:1fr; }
   .products-grid{ grid-template-columns:1fr; }
-  .shop-card img{ height:260px; }
 }
+
 </style>
 
+
 <div class="ov-boutique">
-  <section class="shop-section">
-    <div class="ov-wrap">
+<section class="shop-section">
+<div class="ov-wrap">
 
-      <!-- HEADER -->
-      <div class="shop-header">
-        <div>
-          <h1>
-            {% if current_category %}{{ current_category }}{% else %}Boutique Ovalia{% endif %}
-          </h1>
-          <p>Découvrez nos créations prêtes à expédier.</p>
-        </div>
-
-        <a class="shop-cart-btn" href="{% url 'cart' %}">Voir le panier</a>
-      </div>
-
-      <!-- FILTER BAR (material only) -->
-      <div class="filter-bar">
-        <input type="text" id="searchInput" placeholder="Rechercher un bijou...">
-
-        <select id="materialFilter">
-          <option value="">Tous les matériaux</option>
-          <option value="or massif">Or massif</option>
-          <option value="or rempli">Or rempli</option>
-          <option value="argent sterling">Argent 925</option>
-          <option value="acier inoxydable">Acier inoxydable</option>
-          <option value="plaqué or">Plaqué or</option>
-        </select>
-
-        <select id="categoryFilter">
-          <option value="">Toutes les catégories</option>
-          <option value="Collier">Collier</option>
-          <option value="Chaînes">Chaînes</option>
-          <option value="Bijoux de mains">Bijoux de mains</option>
-          <option value="Bracelet">Bracelet</option>
-          <option value="Accessoires">Accessoires</option>
-          <option value="Boucle doreille">Boucle doreille</option>
-        </select>
-
-      </div>
-
-      <!-- PRODUCTS GRID -->
-      {% if sales %}
-      <div class="products-grid">
-
-        {% for sale in sales %}
-        <div class="product-card"
-          data-name="{{ sale.name|lower }}"
-          data-material="{{ sale.materiaux|lower }}"
-          data-category="{{ sale.category|lower }}">
-
-
-          <div class="shop-card">
-            {% if sale.image %}
-              <img src="{{ sale.image.url }}" alt="{{ sale.name }}">
-            {% else %}
-              <img src="{% static 'images/product-1.png' %}" alt="{{ sale.name }}">
-            {% endif %}
-
-            <div class="shop-card-body">
-              <p class="shop-category">{{ sale.materiaux }}</p>
-              <h5>{{ sale.name }}</h5>
-              <div class="shop-price">${{ sale.price }}</div>
-            </div>
-
-            <div class="shop-actions">
-              <a href="{% url 'sale_detail' sale.id %}">Détails</a>
-
-              <form method="post" action="{% url 'add_to_cart' sale.id %}">
-                {% csrf_token %}
-                <button type="submit">Ajouter</button>
-              </form>
-            </div>
-          </div>
-
-        </div>
-        {% endfor %}
-
-      </div>
-      {% else %}
-        <div class="empty-state">Aucun produit disponible.</div>
-      {% endif %}
-
-    </div>
-  </section>
+<!-- HEADER -->
+<div class="shop-header">
+  <div>
+    <h1>{% if current_category %}{{ current_category }}{% else %}Boutique Ovalia{% endif %}</h1>
+    <p>Découvrez nos créations prêtes à expédier.</p>
+  </div>
+  <a class="shop-cart-btn" href="{% url 'cart' %}">Voir le panier</a>
 </div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <input type="text" id="searchInput" placeholder="Rechercher un bijou...">
+  <select id="materialFilter">
+    <option value="">Tous les matériaux</option>
+    <option value="acier inoxydable">Acier inoxydable</option>
+    <option value="or remplie">Or remplie</option>
+    <option value="argent 925">Argent 925</option>
+    <option value="plaqué or">Plaqué or</option>
+  </select>
+  <select id="categoryFilter">
+    <option value="">Toutes les catégories</option>
+    <option value="collier">Collier</option>
+    <option value="chaînes">Chaînes</option>
+    <option value="bijoux de mains">Bijoux de mains</option>
+    <option value="bracelet">Bracelet</option>
+    <option value="accessoires">Accessoires</option>
+    <option value="boucle doreille">Boucle doreille</option>
+  </select>
+</div>
+
+<!-- PRODUCTS -->
+{% if sales %}
+<div class="products-grid">
+{% for sale in sales %}
+
+<div class="product-card"
+     data-name="{{ sale.name|lower }}"
+     data-material="{{ sale.materiaux|lower }}"
+     data-category="{{ sale.category|lower }}">
+
+  <div class="shop-card">
+
+    <div class="card-img-wrapper"
+         data-images="[{% for img in sale.images.all %}'{{ img.image.url }}'{% if not forloop.last %},{% endif %}{% empty %}'{% if sale.image %}{{ sale.image.url }}{% else %}{% static 'images/product-1.png' %}{% endif %}'{% endfor %}]">
+      <img class="card-main-img"
+           src="{% with sale.images.first as first %}{% if first %}{{ first.image.url }}{% elif sale.image %}{{ sale.image.url }}{% else %}{% static 'images/product-1.png' %}{% endif %}{% endwith %}"
+           alt="{{ sale.name }}">
+      <button class="card-arrow card-prev" type="button">&#8249;</button>
+      <button class="card-arrow card-next" type="button">&#8250;</button>
+    </div>
+
+    <div class="shop-card-body">
+      <p class="shop-category">{{ sale.materiaux }}</p>
+      <h5>{{ sale.name }}</h5>
+      <div class="shop-price">${{ sale.price }}</div>
+    </div>
+
+    <div class="shop-actions">
+      <a href="{% url 'sale_detail' sale.id %}">Détails</a>
+      <form method="post" action="{% url 'add_to_cart' sale.id %}">
+        {% csrf_token %}
+        <button type="submit">Ajouter</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{% endfor %}
+</div>
+
+<!-- PAGINATION -->
+<div class="shop-pagination">
+  {% if sales.has_previous %}
+    <a href="?page={{ sales.previous_page_number }}">Précédent</a>
+  {% endif %}
+  {% for num in sales.paginator.page_range %}
+    <a href="?page={{ num }}" class="{% if sales.number == num %}active{% endif %}">{{ num }}</a>
+  {% endfor %}
+  {% if sales.has_next %}
+    <a href="?page={{ sales.next_page_number }}">Suivant</a>
+  {% endif %}
+</div>
+
+{% else %}
+<div class="empty-state">Aucun produit disponible.</div>
+{% endif %}
+
+</div>
+</section>
+</div>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-  const searchInput = document.getElementById("searchInput");
+  /* SEARCH + FILTER */
+  const searchInput    = document.getElementById("searchInput");
   const materialFilter = document.getElementById("materialFilter");
   const categoryFilter = document.getElementById("categoryFilter");
-  const products = document.querySelectorAll(".product-card");
+  const products       = document.querySelectorAll(".product-card");
 
-  // Normalize (handles accents, uppercase, spaces)
-  function normalize(str) {
-    return (str || "")
-      .toString()
-      .trim()
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-  }
+  function normalize(str){ return (str||"").toLowerCase().trim(); }
 
-  function filterProducts() {
-    const searchValue = normalize(searchInput.value);
-    const selectedMaterial = normalize(materialFilter.value);
-    const selectedCategory = normalize(categoryFilter.value);
+  function filterProducts(){
+    const search   = normalize(searchInput.value);
+    const material = normalize(materialFilter.value);
+    const category = normalize(categoryFilter.value);
 
-    products.forEach(product => {
-
-      const name = normalize(product.dataset.name);
-      const material = normalize(product.dataset.material);
-      const category = normalize(product.dataset.category);
-
+    products.forEach(p => {
       let visible = true;
-
-      // Search filter
-      if (searchValue && !name.includes(searchValue)) {
-        visible = false;
-      }
-
-      // Material filter
-      if (selectedMaterial && material !== selectedMaterial) {
-        visible = false;
-      }
-
-      // Category filter
-      if (selectedCategory && category !== selectedCategory) {
-        visible = false;
-      }
-
-      product.style.display = visible ? "" : "none";
+      if (search   && !normalize(p.dataset.name).includes(search)) visible = false;
+      if (material && normalize(p.dataset.material) !== material)   visible = false;
+      if (category && normalize(p.dataset.category) !== category)   visible = false;
+      p.style.display = visible ? "" : "none";
     });
   }
 
-  // Event listeners
   searchInput.addEventListener("input", filterProducts);
   materialFilter.addEventListener("change", filterProducts);
   categoryFilter.addEventListener("change", filterProducts);
 
+  /* CARD IMAGE CAROUSEL */
+  document.querySelectorAll(".card-img-wrapper").forEach(wrapper => {
+    const images = JSON.parse(wrapper.dataset.images.replace(/'/g, '"'));
+    const img    = wrapper.querySelector(".card-main-img");
+    let current  = 0;
+
+    if (images.length <= 1) {
+      wrapper.dataset.single = "true";
+      return;
+    }
+
+    wrapper.querySelector(".card-prev").addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      current = (current - 1 + images.length) % images.length;
+      img.src = images[current];
+    });
+
+    wrapper.querySelector(".card-next").addEventListener("click", e => {
+      e.preventDefault(); e.stopPropagation();
+      current = (current + 1) % images.length;
+      img.src = images[current];
+    });
+  });
+
 });
 </script>
-
 
 {% endblock %}

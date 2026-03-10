@@ -7,7 +7,8 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from django.contrib import messages
-
+from django.forms import inlineformset_factory
+from gestion.models import Product, ProductImage
 
 
 # everytghing related to users
@@ -90,29 +91,51 @@ def product(request):
     }
     return render(request,"admin/products.html",context)
 
-
+ProductImageFormSet = inlineformset_factory(
+    Product, ProductImage,
+    fields=['image', 'order'],
+    extra=6,
+    can_delete=True
+)
 @login_required
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+        formset = ProductImageFormSet(request.POST, request.FILES)
+        if form.is_valid() and formset.is_valid():
+            product = form.save()
+            formset.instance = product
+            formset.save()
             return redirect('product')
     else:
         form = ProductForm()
-    return render(request, 'admin/product_create.html', {'form': form, 'title': 'Ajouter un produit'})
+        formset = ProductImageFormSet()
+
+    return render(request, 'admin/product_create.html', {
+        'form': form,
+        'formset': formset,
+        'title': 'Ajouter un produit'
+    })
 
 @login_required
 def edit_product(request, id):
     product = get_object_or_404(Product, id=id)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES, instance=product)
-        if form.is_valid():
+        formset = ProductImageFormSet(request.POST, request.FILES, instance=product)
+        if form.is_valid() and formset.is_valid():
             form.save()
+            formset.save()
             return redirect('product')
     else:
         form = ProductForm(instance=product)
-    return render(request, 'admin/product_update.html', {'form': form, 'title': 'Modifier le produit'})
+        formset = ProductImageFormSet(instance=product)
+
+    return render(request, 'admin/product_update.html', {
+        'form': form,
+        'formset': formset,
+        'title': 'Modifier le produit'
+    })
 
 @login_required
 def delete_product(request, id):
@@ -170,18 +193,30 @@ def sales_list(request):
     return render(request, "admin/sales_list.html", {"sales": sales})
 
 
+SaleImageFormSet = inlineformset_factory(
+    Sales, SaleImage,
+    fields=['image', 'order'],
+    extra=6,
+    can_delete=True
+)
+
 @login_required
 def sales_create(request):
     if request.method == "POST":
         form = SalesForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+        formset = SaleImageFormSet(request.POST, request.FILES)
+        if form.is_valid() and formset.is_valid():
+            sale = form.save()
+            formset.instance = sale
+            formset.save()
             return redirect("sales_list")
     else:
         form = SalesForm()
+        formset = SaleImageFormSet()
 
     return render(request, "admin/sales_form.html", {
         "form": form,
+        "formset": formset,
         "title": "Ajouter un produit"
     })
 
