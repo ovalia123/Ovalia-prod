@@ -1,6 +1,8 @@
+
 from pathlib import Path
 import os
-
+import dj_database_url
+from botocore.client import Config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ==================================================
@@ -9,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "unsafe-dev-key")
 DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 # ==================================================
 # APPLICATIONS
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
 
     "gestion",
     "myapp",
+    "storages",
 ]
 
 AUTH_USER_MODEL = "gestion.User"
@@ -37,6 +40,7 @@ AUTH_USER_MODEL = "gestion.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -54,14 +58,15 @@ ROOT_URLCONF = "ovalia2.urls"
 WSGI_APPLICATION = "ovalia2.wsgi.application"
 
 # ==================================================
-# DATABASE (LOCAL)
+# DATABASE
 # ==================================================
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
 
 # ==================================================
@@ -71,7 +76,7 @@ DATABASES = {
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -85,19 +90,45 @@ TEMPLATES = [
 ]
 
 # ==================================================
-# STATIC FILES (LOCAL)
+# STATIC FILES
 # ==================================================
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ==================================================
-# MEDIA FILES (LOCAL)
+# MEDIA FILES (LOCAL — WORKING)
 # ==================================================
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+AWS_ACCESS_KEY_ID = os.getenv("R2_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("R2_SECRET_ACCESS_KEY")
+
+AWS_STORAGE_BUCKET_NAME = "media"
+AWS_S3_REGION_NAME = "auto"
+
+CLOUDFLARE_ACCOUNT_ID = os.getenv("CLOUDFLARE_ACCOUNT_ID").strip()
+AWS_S3_ENDPOINT_URL = f"https://{CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com"
+
+AWS_S3_ADDRESSING_STYLE = "path"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+
+# 🔥 THIS IS WHAT YOU WERE MISSING
+AWS_S3_CUSTOM_DOMAIN = os.getenv("R2_PUBLIC_DOMAIN")
+
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+
 
 # ==================================================
 # I18N
@@ -115,17 +146,15 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ==================================================
-# STRIPE (TEST MODE)
-# ==================================================
-
-STRIPE_SECRET_KEY = "sk_test_51Smxkz8FV4nmYpJpatkpeMdJXMqWUQC7onhw8zJ2bTYMFgg5pV7VBeGS6yRDXRUrBQAZy2Uk1q9Bf5ezJytKbAnF007FUWrSMp"
-STRIPE_PUBLISHABLE_KEY = "pk_test_51Smxkz8FV4nmYpJpITr8cdAiylrpJ553xDFC3n9eRsSMrQ2JgaImG8kDtBV1pUBFVkapuTD3RMV6rhqmzWtxqQUZ00HoHnhR6H"
-STRIPE_WEBHOOK_SECRET = "whsec_454e99e0325808a48e12a20fe05d6d710b97266cb3ee3b0da6776b54015be8df"
-
-# ==================================================
-# CSRF (LOCAL)
+# STRIPE
 # ==================================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:8000",
+    "https://ovalia-prod-production.up.railway.app",
+    "https://www.bijouxovalia.com",
+    "https://bijouxovalia.com",
 ]
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
