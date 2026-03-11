@@ -86,26 +86,36 @@ def shop(request):
 
 def shop_massif(request):
     products = Product.objects.filter(available=True, materiaux='Or massif')
-    return render(request, 'user/shop/or_massif.html', {'products': products})
+    paginator = Paginator(products, 12)
+    page = paginator.get_page(request.GET.get('page'))
+    return render(request, 'user/shop/or_massif.html', {'products': page})
 
 
 def shop_rempli(request):
     products = Product.objects.filter(available=True, materiaux='Or rempli')
-    return render(request, 'user/shop/or_rempli.html', {'products': products})
+    paginator = Paginator(products, 12)
+    page = paginator.get_page(request.GET.get('page'))
+    return render(request, 'user/shop/or_rempli.html', {'products': page})
 
+
+def shop_charms(request):
+    products = Product.objects.filter(available=True, materiaux='Charms')
+    paginator = Paginator(products, 12)
+    page = paginator.get_page(request.GET.get('page'))
+    return render(request, 'user/shop/charms.html', {'products': page})
 
 def shop_argent(request):
     products = Product.objects.filter(available=True, materiaux='Argent sterling')
-    return render(request, 'user/shop/argent.html', {'products': products})
+    paginator = Paginator(products, 12)
+    page = paginator.get_page(request.GET.get('page'))
+    return render(request, 'user/shop/argent.html', {'products': page})
+
+
+
 
 def tennis(request):
     products = Product.objects.filter(available=True, materiaux='Tennis')
     return render(request, 'user/shop/tennis.html', {'products': products})
-
-def shop_charms(request):
-    products = Product.objects.filter(available=True, materiaux='Charms')
-    return render(request, 'user/shop/charms.html', {'products': products})
-
 
 def boutique(request):
     category = request.GET.get("category")

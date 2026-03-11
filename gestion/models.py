@@ -49,6 +49,9 @@ class Sales(models.Model):
         ('Acier inoxydable', 'Acier inoxydable'),
         ('Or remplie', 'Or remplie'),
         ('Argent 925', 'Argent 925'),
+        ('or 14K', 'or 14K'),
+        ('gold filled', 'gold filled'),
+        ('argent 925 plaqué au rhodium', 'argent 925 plaqué au rhodium'),
         ('plaqué or', 'plaqué or'),
     ]
     materiaux = models.CharField(choices=materiaux_choices, max_length=255, default='Non defini')
