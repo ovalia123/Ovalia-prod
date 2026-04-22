@@ -608,43 +608,34 @@ PRENDRE RENDEZ-VOUS
 
 <h2 class="featured-title">PRODUITS COUP DE CŒUR</h2>
 
+
 <div class="products-grid">
+  {% for product in featured_products %}
+    <a href="{% url 'sale_detail' product.id %}" class="product-card">
+      <div class="shop-card">
 
-{% for product in featured_products %}
+        {% with product.images.first as first %}
+          {% if first %}
+            <img src="{{ first.image.url }}" alt="{{ product.name }}">
+          {% elif product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+            <img src="{% static 'images/IMG_3064.JPG' %}" alt="{{ product.name }}">
+          {% endif %}
+        {% endwith %}
 
-<a href="{% url 'sale_detail' product.id %}" class="product-card">
+        <div class="shop-card-body">
+          <p class="shop-category">{{ product.materiaux }}</p>
+          <h5>{{ product.name }}</h5>
+          <div class="shop-price">${{ product.price }}</div>
+        </div>
 
-<div class="shop-card">
-
-{% if product.image %}
-<img src="{{ product.image.url }}" alt="{{ product.name }}">
-{% else %}
-<img src="{% static 'images/product-1.png' %}" alt="">
-{% endif %}
-
-<div class="shop-card-body">
-
-<p class="shop-category">
-{{ product.materiaux }}
-</p>
-
-<h5>
-{{ product.name }}
-</h5>
-
-<div class="shop-price">
-${{ product.price }}
+      </div>
+    </a>
+  {% endfor %}
 </div>
 
-</div>
 
-</div>
-
-</a>
-
-{% endfor %}
-
-</div>
 
 <div class="center-btn">
 <a href="https://book.squareup.com/appointments/mzgetogunly9bg/location/LZSK4WQK919VC/services"
