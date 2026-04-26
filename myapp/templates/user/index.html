@@ -168,7 +168,6 @@ transition:transform .6s cubic-bezier(.19,1,.22,1);
 content:"";
 position:absolute;
 inset:0;
-background:rgba(0,0,0,.28);
 transition:.4s;
 }
 
@@ -192,9 +191,7 @@ z-index:2;
 transform:scale(1.08);
 }
 
-.cat-card:hover::after{
-background:rgba(0,0,0,.45);
-}
+
 
 /* RESPONSIVE */
 
@@ -578,7 +575,7 @@ object-fit:cover;
 
 <section class="hero-ovalia">
 
-<img src="{% static 'images/ACEUILLE.jpg' %}"
+<img src="{% static 'images/hero.jpg' %}"
 class="hero-img">
 
 <div class="hero-overlay">
@@ -692,19 +689,21 @@ PRENDRE RENDEZ-VOUS
 <div class="cat-grid">
 
 <a href="{% url 'boutique' %}?category=Bracelet"" class="cat-card">
-<img src="{% static 'images/IMG_3065.JPG' %}">
+<img src="{% static 'images/BRACELET.jpeg' %}">
 <span>BRACELETS</span>
 </a>
 
+<a href="{% url 'boutique' %}?category=Boucle doreille" class="cat-card">
+<img src="{% static 'images/boucle.JPG' %}">
+<span>BOUCLES D’OREILLES</span>
+</a>
+
 <a href="{% url 'boutique' %}?category=Collier" class="cat-card">
-<img src="{% static 'images/IMG_0306.JPG' %}">
+<img src="{% static 'images/collier.JPG' %}">
 <span>COLLIERS</span>
 </a>
 
-<a href="{% url 'boutique' %}?category=Boucle doreille" class="cat-card">
-<img src="{% static 'images/IMG_2898.JPG' %}">
-<span>BOUCLES D’OREILLES</span>
-</a>
+
 
 </div>
 
